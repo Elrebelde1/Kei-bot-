@@ -19,7 +19,7 @@ const handler = async (m, { conn, text, command, usedPrefix}) => {
     const json = await res.json()
 
     if (!json.status ||!json.res ||!json.res.url) {
-      return m.reply("❌ No se pudo obtener el video. Verifica que la URL sea válida.")
+      return m.reply("❌ No se pudo obtener el video.")
 }
 
     const info = json.res
@@ -27,14 +27,11 @@ const handler = async (m, { conn, text, command, usedPrefix}) => {
 ╭─🎬 *YouTube MP4 Downloader* ─╮
 │
 │ 🎞️ *Título:* ${info.title}
-│ 💽 *Formato:* ${info.format}
-│ 🔊 *Calidad:* ${info.quality}
-│ 📦 *Tamaño:* ${info.filesize}
 │ 📥 *Descargando video...*
 ╰────────────────────────────╯
 `
 
-    await conn.sendMessage(m.chat, { image: { url: info.thumbnail}, caption}, { quoted: m})
+    await conn.sendMessage(m.chat, { text: caption}, { quoted: m})
     await conn.sendMessage(m.chat, {
       video: { url: info.url},
       mimetype: 'video/mp4',
