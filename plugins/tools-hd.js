@@ -1,15 +1,28 @@
 
 import fetch from 'node-fetch'
+import FormData from 'form-data'
 
 let handler = async (m, { conn, args, command}) => {
   const apikey = 'sylphy-8238wss'
   let imageUrl = args[0]
 
-  // Si no hay argumento, intenta obtener la imagen del mensaje citado
+  // Si el usuario responde a una imagen
   if (!imageUrl && m.quoted?.mimetype?.startsWith('image/')) {
-    const media = await conn.downloadAndSaveMediaMessage(m.quoted)
-    imageUrl = media // Esto depende de tu sistema de almacenamiento
-    return m.reply('⚠️ Este método requiere que la imagen esté alojada en línea. Usa una URL directa.')
+    try {
+      const media = await conn.downloadMediaMessage(m.quoted)
+      const form = new FormData()
+      form.append('file', media, 'image.jpg')
+      form.append('reqtype', 'fileupload')
+
+      const uploadRes = await fetch('https://catbox.moe/user/api.php', {
+        method: 'POST',
+        body: form
+})
+      imageUrl = await uploadRes.text()
+} catch (e) {
+      console.error('❌ Error al subir la imagen:', e)
+      return m.reply('⚠️ No se pudo obtener la imagen. Asegúrate de responder a una imagen válida.')
+}
 }
 
   // Si no hay URL válida
