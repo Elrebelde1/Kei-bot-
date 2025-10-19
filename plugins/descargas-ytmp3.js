@@ -12,41 +12,43 @@ const handler = async (m, { conn, text, command, usedPrefix}) => {
     return m.reply("❌ Por favor, proporciona una URL válida de YouTube.")
 }
 
+  const apiUrl = `https://api.sylphy.xyz/download/ytmp3v2?url=${encodeURIComponent(text)}&apikey=sylphy-8238wss`
+
   try {
-    const res = await fetch(`https://api.sylphy.xyz/download/ytmp3?url=${encodeURIComponent(text)}&apikey=sylphy-8238wss`)
+    const res = await fetch(apiUrl)
     const json = await res.json()
 
-    if (!json.status ||!json.res ||!json.res.url) {
-      return m.reply("❌ No se pudo descargar el audio.")
+    const dl = json.dl_url || (json.data? json.data.dl_url: null)
+    const title = json.title || (json.data? json.data.title: "Audio de YouTube")
+
+    if (!dl) {
+      return m.reply("❌ No se pudo obtener el audio.")
 }
 
-    const info = json.res
     const caption = `
-╭─🎶 *YouTube MP3 Downloader* 🎶─╮
+╭─🎧 *YouTube MP3 Downloader* ─╮
 │
-│ 🎵 *Título:* ${info.title}
-│ 💽 *Formato:* ${info.format}
-│ 🔊 *Calidad:* ${info.quality}
-│ 📦 *Tamaño:* ${info.filesize}
+│ 🎵 *Título:* ${title}
 │ 📥 *Descargando audio...*
 ╰────────────────────────────╯
 `
 
-    await conn.sendMessage(m.chat, { image: { url: info.thumbnail}, caption}, { quoted: m})
+    await conn.sendMessage(m.chat, { text: caption}, { quoted: m})
     await conn.sendMessage(m.chat, {
-      audio: { url: info.url},
-      mimetype: 'audio/mp4',
-      fileName: `${info.title}.mp3`
+      audio: { url: dl},
+      mimetype: 'audio/mpeg',
+      fileName: `${title}.mp3`,
+      ptt: false
 }, { quoted: m})
 
-} catch (e) {
-    console.error(e)
-    m.reply("⚠️ Error al descargar el audio.")
+} catch (error) {
+    console.error("Error al conectar con la API:", error)
+    m.reply("⚠️ Ocurrió un error al intentar descargar el audio.")
 }
 }
 
 handler.help = ['ytmp3 <url>']
-handler.tags = ['music']
+handler.tags = ['audio']
 handler.command = /^ytmp3$/i
 
 export default handler
