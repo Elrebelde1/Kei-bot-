@@ -8,7 +8,7 @@ let handler = async (m, { conn, text}) => {
   // Si es una URL de Spotify
   if (text.includes('spotify.com/track')) {
     try {
-      const res = await fetch(`https://api.sylphy.xyz/download/spotify?url=${encodeURIComponent(text)}&apikey=${apikey}`)
+      const res = await fetch(`https://api.sylphy.xyz/download/spotify?url=${encodeURIComponent(text)}&apikey=sylphy-8238wss`)
       const json = await res.json()
 
       if (!json ||!json.status ||!json.data ||!json.data.dl_url) {
@@ -31,7 +31,7 @@ let handler = async (m, { conn, text}) => {
 
   // Si es texto para búsqueda
   try {
-    const res = await fetch(`https://api.sylphy.xyz/search/spotify?q=${encodeURIComponent(text)}&apikey=${apikey}`)
+    const res = await fetch(`https://api.sylphy.xyz/search/spotify?q=${encodeURIComponent(text)}&apikey=sylphy-8238wss`)
     const json = await res.json()
 
     if (!json ||!json.status ||!json.data || json.data.length === 0) {
