@@ -1,7 +1,6 @@
 
-
 const ytSearchHandler = async (m, { conn, text, usedPrefix, command}) => {
-  const apikey = "sylphy-8238wss";
+  const apikey = "sylphy-8238wss"; // ← Tu clave actual
 
   // Validar entrada
   if (!text ||!text.trim()) {
@@ -17,7 +16,13 @@ const ytSearchHandler = async (m, { conn, text, usedPrefix, command}) => {
   await conn.reply(m.chat, `🔎 Buscando en YouTube por: *${query}*`, m);
 
   try {
-    const res = await fetch(`https://api.sylphy.xyz/search/youtube?q=${encodeURIComponent(query)}&apike=sylphy-8238wss`);
+    const url = `https://api.sylphy.xyz/search/youtube?q=${encodeURIComponent(query)}&apike=sylphy-8238wss`;
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error(`Error ${res.status}: ${res.statusText}`);
+}
+
     const json = await res.json();
 
     if (!json.status ||!json.res || json.res.length === 0) {
@@ -29,7 +34,6 @@ const ytSearchHandler = async (m, { conn, text, usedPrefix, command}) => {
     for (const video of videos) {
       const caption = `
 ╭─🎶 *Sasuke Bot - Audio YouTube* 🎶─╮
-│
 │ 🎵 *Título:* ${video.title}
 │ 👤 *Autor:* ${video.author}
 │ ⏱️ *Duración:* ${video.duration}
