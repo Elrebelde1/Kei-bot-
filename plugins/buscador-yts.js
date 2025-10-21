@@ -2,22 +2,25 @@
 import fetch from "node-fetch";
 
 let handler = async (m, { conn, text, usedPrefix, command}) => {
-if (!text) return m.reply("Ingresa un texto a buscar")
-
-const url = `https://api.sylphy.xyz/search/youtube?q=${encodeURIComponent(query)}&apikey=sylphy-8238wss`;
-const res = await fetch(url);
-
-if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
-
-const json = await res.json();
-
-if (!json.status || !json.res || json.res.length === 0) {
-    return m.reply("No se encontraron resultados.");
+  if (!text ||!text.trim()) {
+    return m.reply(`📌 *Uso correcto:*\n${usedPrefix + command} <término de búsqueda>\n📍 *Ejemplo:* ${usedPrefix + command} Nio Garcia Infinitamente remix`);
 }
 
-const videos = json.res.slice(0, 5);
+  const query = text.trim(); // ← Aquí defines 'query' correctamente
+  const url = `https://api.sylphy.xyz/search/youtube?q=${encodeURIComponent(query)}&apikey=sylphy-8238wss`;
+  const res = await fetch(url);
 
-for (const video of videos) {
+  if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+
+  const json = await res.json();
+
+  if (!json.status ||!json.res || json.res.length === 0) {
+    return m.reply("❌ No se encontraron resultados.");
+}
+
+  const videos = json.res.slice(0, 5);
+
+  for (const video of videos) {
     const caption = `
 ╭─🎶 *Sasuke Bot - Audio YouTube* 🎶─╮
 │ 🎵 *Título:* ${video.title}
@@ -36,15 +39,15 @@ for (const video of videos) {
 `;
 
     await conn.sendMessage(
-        m.chat,
-        { image: { url: video.thumbnail }, caption },
-        { quoted: m }
-    );
+      m.chat,
+      { image: { url: video.thumbnail}, caption},
+      { quoted: m}
+);
 }
 };
 
 handler.help = ["ytsearch", "yts <texto>"];
 handler.tags = ["búsquedas"];
-handler.command = ["ytsearch", "yts"]
+handler.command = ["ytsearch", "yts"];
 
 export default handler;
