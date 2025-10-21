@@ -8,8 +8,10 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
     return m.reply(`📌 *Uso correcto:*\n${usedPrefix + command} <enlace de YouTube>\n📍 *Ejemplo:* ${usedPrefix + command} https://youtu.be/g5nG15iTPT8`);
 }
 
+  await m.react("⏳"); // Reacción inicial
+
   try {
-    const url = `https://api.sylphy.xyz/download/ytmp3v2?url=${encodeURIComponent(text)}&apikey=${apikey}`;
+    const url = `https://api.sylphy.xyz/download/ytmp3v2?url=${encodeURIComponent(text)}&apikey=sylphy-8238wss`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
 
@@ -29,6 +31,8 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
 },
       { quoted: m}
 );
+
+    await m.react("🟢"); // Reacción final al completar
 } catch (error) {
     console.error("❌ Error:", error);
     await conn.reply(m.chat, `🚨 *Error:* ${error.message || "No se pudo procesar la solicitud."}`, m);
