@@ -1,35 +1,55 @@
 
-var handler = async (m, { conn, args, usedPrefix, command}) => {
-  const emoji = '🎧';
-  const emoji2 = '⚠️';
+import fetch from 'node-fetch';
 
-  if (!args[0]) {
-    return conn.reply(m.chat, `${emoji2} Debes proporcionar un enlace de YouTube.\n\nEjemplo:\n*${usedPrefix}${command} https://youtu.be/zYwGL6qOON4*`, m);
+let handler = async (m, { conn, text, usedPrefix, command}) => {
+  const emoji = '🎶';
+  const errorEmoji = '❌';
+  const apiKey = 'sylphy-8238wss';
+
+  if (!text || (!text.includes('youtube.com') &&!text.includes('youtu.be'))) {
+    return conn.reply(m.chat, `${errorEmoji} *Enlace inválido.*\n\n📌 *Uso correcto:*\n${usedPrefix + command} <enlace de YouTube>\n📍 *Ejemplo:* ${usedPrefix + command} https://youtu.be/zYwGL6qOON4`, m);
 }
 
-  const videoUrl = encodeURIComponent(args[0].trim());
-  const apiKey = 'sylphy-8238wss';
-  const apiUrl = `https://api.sylphy.xyz/download/ytmp3v2?url=${videoUrl}&apikey=${apiKey}`;
+  await m.react('⏳');
 
   try {
-    const res = await fetch(apiUrl);
-    const json = await res.json();
+    const encodedUrl = encodeURIComponent(text.trim());
+    const apiUrl = `https://api.sylphy.xyz/download/ytmp3v2?url=${encodedUrl}&apikey=${apiKey}`;
+    const response = await fetch(apiUrl);
 
-    if (!json.status ||!json.data ||!json.data.dl_url) {
-      return conn.reply(m.chat, `${emoji2} No se pudo obtener el audio. Verifica que el enlace sea válido.`, m);
+    if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
+    const result = await response.json();
+    const data = result?.data;
+
+    if (!result.status ||!data?.dl_url) {
+      return conn.reply(m.chat, `${errorEmoji} No se pudo obtener el audio. Intenta con otro video.`, m);
 }
 
-    const { title, dl_url, format} = json.data;
+    const caption = [
+      `${emoji} *Audio de YouTube*`,
+      `🎵 *Título:* ${data.title}`,
+      `📁 *Formato:* ${data.format.toUpperCase()}`,
+      `📥 *Tamaño:* ${data.size || 'Desconocido'}`
+    ].join('\n');
 
-    let info = `${emoji} *Audio extraído de YouTube:*\n`;
-    info += `🎵 *Título:* ${title}\n`;
-    info += `📁 *Formato:* ${format.toUpperCase()}\n`;
-    info += `📥 *Descargando...*`;
+    await conn.sendMessage(
+      m.chat,
+      {
+        audio: { url: data.dl_url},
+        mimetype: 'audio/mpeg',
+        fileName: `${data.title}.${data.format}`,
+        ptt: false
+},
+      { quoted: m}
+);
 
-    await conn.sendFile(m.chat, dl_url, `${title}.${format}`, info, m);
-} catch (e) {
-    console.error(e);
-    return conn.reply(m.chat, `${emoji2} Ocurrió un error al procesar el enlace. Intenta nuevamente más tarde.`, m);
+    await conn.reply(m.chat, caption, m);
+    await m.react('✅');
+} catch (err) {
+    console.error(err);
+    await conn.reply(m.chat, `${errorEmoji} *Error:* ${err.message || 'No se pudo procesar la solicitud.'}`, m);
+    await m.react('⚠️');
 }
 };
 
