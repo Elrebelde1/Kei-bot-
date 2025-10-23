@@ -30,7 +30,7 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
       package: pkg = "N/A",
       lastUpdate = "N/A",
       icon,
-      dllink = "No disponible"
+      dllink = null
 } = raw;
 
     const caption = `
@@ -38,7 +38,7 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
 📦 *Paquete:* ${pkg}
 🗓️ *Última actualización:* ${lastUpdate}
 📁 *Tamaño:* ${size}
-🔗 *Descarga:* ${dllink}
+🔗 *Descarga:* ${dllink || "No disponible"}
 `;
 
     if (icon) {
@@ -47,6 +47,11 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
       await conn.sendFile(m.chat, iconBuffer, "icon.png", caption, m);
 } else {
       await m.reply(caption);
+}
+
+    // Intentar enviar el APK si el enlace es directo
+    if (dllink && dllink.endsWith(".apk")) {
+      await conn.sendFile(m.chat, dllink, `${name}.apk`, `📦 *Aquí tienes el APK de ${name}*`, m);
 }
 
     await m.react("✅");
