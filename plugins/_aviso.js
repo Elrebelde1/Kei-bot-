@@ -1,28 +1,36 @@
+
+import fetch from 'node-fetch' // Puedes quitarlo si no usas fetch en este archivo
+
 const handler = async (m, { conn, text, command, usedPrefix}) => {
-  // Lista de IDs de canales (puedes agregar más)
+  // ✅ IDs de canales configurados
   const channelIds = [
-    '120363414007802886@newsletter', // Reemplaza con el ID real del canal
-    '120363419364337473@newsletter'  // Otro canal opcional
+    '120363414007802886@newsletter',
+    '120363419364337473@newsletter'
   ]
 
-  if (!text) {
+  const message = text?.trim()
+  if (!message) {
     return m.reply(`📌 *Uso correcto:*\n${usedPrefix + command} <mensaje>\n📍 *Ejemplo:* ${usedPrefix + command} Este es un aviso importante`)
 }
 
-  for (const id of channelIds) {
+  let failed = 0
+
+  await Promise.all(channelIds.map(async id => {
     try {
-      await conn.sendMessage(id, { text}, { quoted: m})
+      await conn.sendMessage(id, { text: message}, { quoted: m})
 } catch (e) {
       console.error(`❌ Error al enviar al canal ${id}:`, e)
+      failed++
 }
-}
+}))
 
-  m.reply(`✅ *Mensaje enviado a ${channelIds.length} canal(es).*`)
+  const success = channelIds.length - failed
+  m.reply(`✅ *Mensaje enviado a ${success} canal(es).*${failed? ` ❌ Falló en ${failed}.`: ''}`)
 }
 
 handler.help = ['avisocanal <mensaje>']
 handler.tags = ['admin']
 handler.command = /^avisocanal$/i
-handler.owner = true // Solo el dueño puede usar este comando
+handler.owner = true
 
 export default handler
