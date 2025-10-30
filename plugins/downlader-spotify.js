@@ -7,11 +7,11 @@ const handler = async (m, { conn, text, command, usedPrefix}) => {
 }
 
   try {
-    let trackUrl = text.trim();
+    let url = text.trim();
 
     // Si es texto, buscar primero
-    if (!trackUrl.includes("open.spotify.com/track")) {
-      const searchRes = await fetch(`https://api.vreden.my.id/api/v1/search/spotify?query=${encodeURIComponent(trackUrl)}&limit=1`);
+    if (!url.includes("open.spotify.com/track")) {
+      const searchRes = await fetch(`https://api.vreden.my.id/api/v1/search/spotify?query=${encodeURIComponent(url)}&limit=1`);
       const searchJson = await searchRes.json();
 
       const track = searchJson.result?.search_data?.[0];
@@ -19,11 +19,11 @@ const handler = async (m, { conn, text, command, usedPrefix}) => {
         return m.reply("❌ No se encontraron canciones.");
 }
 
-      trackUrl = track.song_link;
+      url = track.song_link;
 }
 
-    // Descargar desde la URL obtenida
-    const downloadRes = await fetch(`https://api.vreden.my.id/api/v1/download/spotify?url=${encodeURIComponent(trackUrl)}`);
+    // Descargar desde la URL obtenida o proporcionada
+    const downloadRes = await fetch(`https://api.vreden.my.id/api/v1/download/spotify?url=${encodeURIComponent(url)}`);
     const downloadJson = await downloadRes.json();
     const song = downloadJson.result;
 
@@ -38,7 +38,7 @@ const handler = async (m, { conn, text, command, usedPrefix}) => {
 │ 💽 *Álbum:* ${song.album}
 │ 📅 *Lanzamiento:* ${song.release_date}
 │ ⏱️ *Duración:* ${(song.duration_ms / 60000).toFixed(2)} min
-│ 🔗 *Enlace:* ${trackUrl}
+│ 🔗 *Enlace:* ${url}
 │ 📥 *Descargando audio...*
 ╰────────────────────────────╯
 `;
