@@ -47,29 +47,29 @@ const handler = async (m, { conn, text, command}) => {
     const thumbBuffer = await thumbRes.buffer();
     await conn.sendFile(m.chat, thumbBuffer, "thumb.jpg", caption, m);
 
-    const apiRes = await fetch(`https://api.starlights.uk/api/downloader/youtube?url=${encodeURIComponent(urlToUse)}`);
-    const json = await apiRes.json();
-
-    if (!json ||!json.status || (!json.mp3?.dl_url &&!json.mp4?.dl_url)) {
-      return m.reply("⚠️ *La API respondió pero no incluyó enlaces de descarga.*");
-}
-
     if (command === "play") {
-      const dl = json.mp3?.dl_url;
-      if (!dl) return m.reply("❌ *No se pudo obtener el audio.*");
+      const apiRes = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/audio?url=${encodeURIComponent(urlToUse)}&quality=128`);
+      const json = await apiRes.json();
+      const dl = json?.result?.download?.url;
+      const format = "mp3";
+
+      if (!json?.result?.status ||!dl) return m.reply("❌ *No se pudo obtener el audio.*");
 
       await conn.sendMessage(m.chat, {
         audio: { url: dl},
         mimetype: "audio/mpeg",
-        fileName: `${title}.mp3`
+        fileName: `${title}.${format}`
 }, { quoted: m});
 
       await m.react("✅");
 }
 
     if (command === "play2" || command === "playvid") {
-      const dl = json.mp4?.dl_url;
-      if (!dl) return m.reply("❌ *No se pudo obtener el video.*");
+      const apiRes = await fetch(`https://api.vreden.my.id/api/v1/download/play/video?query=${encodeURIComponent(text.trim())}`);
+      const json = await apiRes.json();
+      const dl = json?.result?.download?.url;
+
+      if (!json?.result?.status ||!dl) return m.reply("❌ *No se pudo obtener el video.*");
 
       const fileRes = await fetch(dl);
       const sizeMB = parseInt(fileRes.headers.get("Content-Length") || 0) / (1024 * 1024);
