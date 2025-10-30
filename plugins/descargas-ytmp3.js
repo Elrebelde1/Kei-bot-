@@ -2,8 +2,6 @@
 import fetch from "node-fetch";
 
 let handler = async (m, { conn, text, usedPrefix, command}) => {
-  const apikey = "sylphy-8238wss";
-
   if (!text || (!text.includes("youtube.com") &&!text.includes("youtu.be"))) {
     return m.reply(`📌 *Uso correcto:*\n${usedPrefix + command} <enlace de YouTube>\n📍 *Ejemplo:* ${usedPrefix + command} https://youtu.be/z6LsIMZ546w`);
 }
@@ -11,25 +9,27 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
   await m.react("⏳"); // Reacción inicial
 
   try {
-    const url = `https://api.sylphy.xyz/download/ytmp3?url=${encodeURIComponent(text)}&apikey=sylphy-8238wss`;
+    const url = `https://api.vreden.my.id/api/v1/download/youtube/audio?url=${encodeURIComponent(text)}&quality=128`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
 
     const json = await res.json();
-    const data = json?.res;
+    const data = json?.result;
 
-    if (!json.status ||!data?.url) {
+    if (!data?.status ||!data?.download?.url) {
       return m.reply("❌ No se pudo obtener el audio. Verifica el enlace o intenta con otro video.");
 }
 
-    const { title, url: dl_url, format} = data;
+    const { title, download, metadata} = data;
+    const dl_url = download.url;
+    const filename = download.filename || `${title}.mp3`;
 
     await conn.sendMessage(
       m.chat,
       {
         audio: { url: dl_url},
         mimetype: 'audio/mpeg',
-        fileName: `${title}.${format}`
+        fileName: filename
 },
       { quoted: m}
 );
