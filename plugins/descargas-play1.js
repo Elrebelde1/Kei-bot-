@@ -47,17 +47,20 @@ const handler = async (m, { conn, text, command}) => {
     const thumbBuffer = await thumbRes.buffer();
     await conn.sendFile(m.chat, thumbBuffer, "thumb.jpg", caption, m);
 
-    if (command === "play") {
-      const apiRes = await fetch(`https://api.sylphy.xyz/download/ytmp3?url=${encodeURIComponent(urlToUse)}&apikey=sylphy-8238wss`);
-      const json = await apiRes.json();
-      const dl = json?.res?.url;
-      const format = json?.res?.format || "mp3";
+    const apiRes = await fetch(`https://api.starlights.uk/api/downloader/youtube?url=${encodeURIComponent(urlToUse)}`);
+    const json = await apiRes.json();
 
-      if (!json.status ||!dl) return m.reply("❌ *No se pudo obtener el audio.*");
+    if (!json.status) return m.reply("❌ *No se pudo obtener la descarga.*");
+
+    if (command === "play") {
+      const dl = json.mp3?.dl_url;
+      const format = "mp3";
+
+      if (!dl) return m.reply("❌ *No se pudo obtener el audio.*");
 
       await conn.sendMessage(m.chat, {
         audio: { url: dl},
-        mimetype: format === "mp3"? "audio/mpeg": "audio/mp4",
+        mimetype: "audio/mpeg",
         fileName: `${title}.${format}`
 }, { quoted: m});
 
@@ -65,11 +68,9 @@ const handler = async (m, { conn, text, command}) => {
 }
 
     if (command === "play2" || command === "playvid") {
-      const apiRes = await fetch(`https://api.sylphy.xyz/download/ytmp4?url=${encodeURIComponent(urlToUse)}&apikey=sylphy-8238wss`);
-      const json = await apiRes.json();
-      const dl = json?.res?.url || json?.dl_url;
+      const dl = json.mp4?.dl_url;
 
-      if (!json.status ||!dl) return m.reply("❌ *No se pudo obtener el video.*");
+      if (!dl) return m.reply("❌ *No se pudo obtener el video.*");
 
       const fileRes = await fetch(dl);
       const sizeMB = parseInt(fileRes.headers.get("Content-Length") || 0) / (1024 * 1024);
