@@ -36,20 +36,23 @@ const handler = async (m, { conn, text, command}) => {
     const thumbnail = video?.thumbnail || "https://i.imgur.com/JP52fdP.jpg";
 
     // Encabezado y etiquetas navideñas
+    // FIX: Se envuelve el diseño en triple backticks (```) para forzar la alineación.
     const caption = `
-╭─[ *Trineo Musical de Sasuke* ]─╮
-│ 🎶 *Villancico:* ${title}
-│ 👤 *Intérprete:* ${author}
-│ ⏱️ *Tiempo en el Polo:* ${duration}
-│ 👁️ *Nieve Vistas:* ${views}
-│ 🔗 *Pista Musical:* ${urlToUse}
+\`\`\`
+╭─[ Trineo Musical de Sasuke ]─╮
+│ 🎶 Villancico: ${title}
+│ 👤 Intérprete: ${author}
+│ ⏱️ Tiempo en el Polo: ${duration}
+│ 👁️ Nieve Vistas: ${views}
+│ 🔗 Pista Musical: ${urlToUse}
 ╰──────────────────╯
+\`\`\`
 
 🎁 *Santa está empacando tu regalo...*
 `;
 
     const thumbRes = await fetch(thumbnail);
-    const thumbBuffer = await thumbRes.buffer();
+    const thumbBuffer = await await thumbRes.buffer();
     await conn.sendFile(m.chat, thumbBuffer, "thumb.jpg", caption, m);
 
     if (command === "play") {
