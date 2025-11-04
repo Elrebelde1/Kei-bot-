@@ -1,17 +1,22 @@
-let handler = async (m, { isPrems, conn }) => {
+Let handler = async (m, { isPrems, conn }) => {
 let time = global.db.data.users[m.sender].lastcofre + 0 
-if (new Date - global.db.data.users[m.sender].lastcofre < 0) throw `⏳ Ya reclamaste tu cofre. Vuelve en *${msToTime(time - new Date())}* para reclamar de nuevo.`
+if (new Date - global.db.data.users[m.sender].lastcofre < 0) throw `⏳ El Trineo de Santa está ocupado. Vuelve en *${msToTime(time - new Date())}* para reclamar tus regalos.`
 
-let img = 'https://qu.ax/yxwAs.jpg'
+let img = 'https://qu.ax/yxwAs.jpg' // Considera usar una imagen de fondo navideña
 
 let texto = `
-✨🎨 *𝕄𝔼ℕ𝕌́ ℂℝ𝔼𝔸ℂ𝕀𝕆́ℕ 𝔻𝔼 𝕃𝕆𝔾𝕆𝕊* 🎨✨
+🎁🔔 *𝕄𝔼ℕ𝕌́ 𝔽𝔼𝕊𝕋𝕀𝕍𝕆 𝔻𝔼 𝕃𝕆𝔾𝕆𝕊* ❄️🎄
 ––––––––––––––––––––––––––––––––––––––
 
 _¡𝘊𝘳𝘦𝘢 𝘭𝘰𝘨𝘰𝘴 𝘪𝘯𝘤𝘳𝘦𝘪́𝘣𝘭𝘦𝘴 𝘤𝘰𝘯 𝘶𝘯 𝘴𝘰𝘭𝘰 𝘤𝘰𝘮𝘢𝘯𝘥𝘰!_
 
+*Comandos Destacados de Temporada:*
+*🎄 .logochristmas (𝚝𝚎𝚡𝚝𝚘)*
+*👼 .logoangel (𝚝𝚎𝚡𝚝𝚘)*
+*🌌 .logocielo (𝚝𝚎𝚡𝚝𝚘)*
+
+*Otros Estilos Disponibles:*
 💖 .logocorazon (𝚝𝚎𝚡𝚝𝚘)
-🎄 .logochristmas (𝚝𝚎𝚡𝚝𝚘)
 💑 .logopareja (𝚝𝚎𝚡𝚝𝚘)
 👾 .logoglitch (𝚝𝚎𝚡𝚝𝚘)
 😔 .logosad (𝚝𝚎𝚡𝚝𝚘)
@@ -25,8 +30,6 @@ _¡𝘊𝘳𝘦𝘢 𝘭𝘰𝘨𝘰𝘴 𝘪𝘯𝘤𝘳𝘦𝘪́𝘣𝘭𝘦�
 🥷 .logonaruto (𝚝𝚎𝚡𝚝𝚘)
 🚀 .logofuturista (𝚝𝚎𝚡𝚝𝚘)
 ☁️ .logonube (𝚝𝚎𝚡𝚝𝚘)
-👼 .logoangel (𝚝𝚎𝚡𝚝𝚘) 
-🌌 .logocielo (𝚝𝚎𝚡𝚝𝚘)
 ✍️ .logograffiti3d (𝚝𝚎𝚡𝚝𝚘)
 💻 .logomatrix (𝚝𝚎𝚡𝚝𝚘)
 🔪 .logohorror (𝚝𝚎𝚡𝚝𝚘)
@@ -36,7 +39,7 @@ _¡𝘊𝘳𝘦𝘢 𝘭𝘰𝘨𝘰𝘴 𝘪𝘯𝘤𝘳𝘦𝘪́𝘣𝘭𝘦�
 👸🔫 .logopubgfem (𝚝𝚎𝚡𝚝𝚘)
 👑 .logolol (𝚝𝚎𝚡𝚝𝚘)
 👽 .logoamongus (𝚝𝚎𝚡𝚝𝚘)
-🎧 .logoportadaplayer (𝚝𝚎𝚡𝚝𝚘)
+🎧 .logoportadaplayer (𝚝𝚎𝚡𝚝o)
 🔥 .logoportadaff (𝚝𝚎𝚡𝚝𝚘)
 🐯🎬 .logovideotiger (𝚝𝚎𝚡𝚝𝚘)
 🎬✨ .logovideointro (𝚝𝚎𝚡𝚝𝚘)
@@ -45,6 +48,7 @@ _¡𝘊𝘳𝘦𝘢 𝘭𝘰𝘨𝘰𝘴 𝘪𝘯𝘤𝘳𝘦𝘪́𝘣𝘭𝘦�
 🐦 .tweet (𝚌𝚘𝚖𝚎𝚗𝚝𝚊𝚛𝚒𝚘)
 
 ––––––––––––––––––––––––––––––––––––––
+_¡Felices Fiestas! 🌟 Crea tu logo navideño con `.logochristmas`_
 `
 
 const fkontak = {
