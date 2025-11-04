@@ -8,8 +8,8 @@ export async function before(m, { conn, groupMetadata}) {
     const chat = global.db?.data?.chats?.[m.chat];
     if (!chat ||!chat.bienvenida) return true;
 
-    // --- 🎁 Enlace de imagen Navideña ---
-    const defaultImageUrl = 'https://qu.ax/nQc8G.jpg'; // Imagen de Papá Noel
+    // --- ✅ Enlace de imagen solicitado por el usuario ---
+    const defaultImageUrl = 'https://qu.ax/yxwAs.jpg'; 
 
     // Función para obtener la imagen como buffer
     const get_default_image_buffer = async () => {
@@ -53,7 +53,7 @@ export async function before(m, { conn, groupMetadata}) {
     const groupName = groupMetadata.subject;
     const groupDesc = groupMetadata.desc || '📜 Sin descripción disponible';
 
-    // *** Obtener el buffer de la imagen Navideña para todos los casos ***
+    // *** Obtener el buffer de la imagen solicitada para todos los casos ***
     const imgBuffer = await get_default_image_buffer();
     // *************************************************************************
 
