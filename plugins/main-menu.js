@@ -18,7 +18,7 @@ const saludarSegunHora = () => {
 };
 
 // Imagen de respaldo
-const img = 'https://qu.ax/yxwAs.jpg';
+const img = 'https://files.catbox.moe/lh55jm.jpg';
 const sectionDivider = '╰━━━━━━━━━━━━━━━━━━⭓';
 
 // Pie de menú con mensaje navideño
