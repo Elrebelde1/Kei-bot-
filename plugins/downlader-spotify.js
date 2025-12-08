@@ -1,3 +1,4 @@
+
 import fetch from 'node-fetch';
 import axios from 'axios';
 
@@ -5,15 +6,16 @@ const handler = async (m, { conn, command, args, text, usedPrefix}) => {
     if (!text) throw `_*[ ⚠️ ] Agrega lo que quieres buscar*_\n\n_Ejemplo:_\n${usedPrefix}${command} Jomblo Happy`;
 
     try {
-        const searchUrl = `https://api.vreden.my.id/api/v1/search/spotify?query=${encodeURIComponent(text)}&limit=1`;
+        // Buscar en YouTube
+        const searchUrl = `https://api.lolhuman.xyz/api/ytsearch?apikey=TuAPIKEY&q=${encodeURIComponent(text)}`;
         const { data} = await axios.get(searchUrl);
 
-        if (!data ||!data.data || data.data.length === 0) {
-            throw `_*[ ⚠️ ] No se encontraron resultados para "${text}" en Spotify.*_`;
+        if (!data ||!data.result || data.result.length === 0) {
+            throw `_*[ ⚠️ ] No se encontraron resultados para "${text}" en YouTube.*_`;
 }
 
-        const track = data.data[0];
-        const { title, artist, duration, url, image} = track;
+        const video = data.result[0];
+        const { title, link, thumbnail, duration, author} = video;
 
         const info = `⧁ 𝙏𝙄𝙏𝙐𝙇𝙊
 » ${title}
@@ -22,28 +24,29 @@ const handler = async (m, { conn, command, args, text, usedPrefix}) => {
 » ${duration}
 ﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘
 ⧁  𝘼𝙍𝙏𝙄𝙎𝙏𝘼
-» ${artist}
+» ${author}
 ﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘﹘
 ⧁ 𝙐𝙍𝙇
-» ${url}
+» ${link}
 
 _*🎶 Enviando música...*_`.trim();
 
-        await conn.sendFile(m.chat, image, 'spotify.jpg', info, m);
+        await conn.sendFile(m.chat, thumbnail, 'yt.jpg', info, m);
 
-        const downloadUrl = `https://api.vreden.my.id/api/v1/download/spotify?url=${encodeURIComponent(url)}`;
-        const response = await fetch(downloadUrl);
-        const result = await response.json();
+        // Descargar audio
+        const dlUrl = `https://api.lolhuman.xyz/api/ytmusic?apikey=TuAPIKEY&url=${encodeURIComponent(link)}`;
+        const res = await fetch(dlUrl);
+        const result = await res.json();
 
-        if (result && result.data && result.data.url) {
-            const audioUrl = result.data.url;
+        if (result && result.result && result.result.link) {
+            const audioUrl = result.result.link;
             const filename = `${title || 'audio'}.mp3`;
 
             await conn.sendMessage(m.chat, {
                 audio: { url: audioUrl},
                 fileName: filename,
                 mimetype: 'audio/mpeg',
-                caption: `╭━❰  *Spotify*  ❱━⬣\n${filename}\n╰━❰ *${botname}* ❱━⬣`,
+                caption: `╭━❰  *YouTube*  ❱━⬣\n${filename}\n╰━❰ *Bot* ❱━⬣`,
                 quoted: m
 });
 } else {
@@ -51,7 +54,8 @@ _*🎶 Enviando música...*_`.trim();
 }
 
 } catch (e) {
-        await m.reply(e)
+        await m.reply(typeof e === 'string'? e: '❌ _*Error inesperado. Intenta nuevamente.*_');
+        console.error('❌ Error:', e);
 }
 };
 
