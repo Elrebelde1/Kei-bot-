@@ -233,7 +233,7 @@ const handler = async (m, { conn, args, usedPrefix, command }) => {
       trackInfo = {
         title: query,
         artist: "Artista Desconocido",
-        thumbnail: "https://files.catbox.moe/u6vqdk.jpg"
+        thumbnail: "https://files.catbox.moe/bex83k.jpg"
       };
     }
 
