@@ -17,14 +17,9 @@ let handler = async (m, { conn, text, usedPrefix, command}) => {
 
     const json = await res.json();
 
-    // Algunos endpoints devuelven los resultados directamente en `result`, otros en `result.data`
-    const results = Array.isArray(json?.result)
-? json.result
-: Array.isArray(json?.result?.data)
-? json.result.data
-: [];
-
-    if (results.length === 0) {
+    // La API devuelve un array directamente en `result`
+    const results = json?.result;
+    if (!Array.isArray(results) || results.length === 0) {
       return m.reply("❌ No se encontraron resultados para tu búsqueda.");
 }
 
