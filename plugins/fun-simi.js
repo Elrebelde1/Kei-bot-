@@ -2,11 +2,12 @@ import fetch from "node-fetch";
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) {
-    return conn.reply(m.chat, `🌸 ¡Hola! ¿cómo puedo ayudarte hoy?`, m, rcanal);
+    return conn.reply(m.chat, ` ¡Hola! ¿cómo puedo ayudarte hoy?`, m, rcanal);
   }
 
   try {
-    const url = `https://api.kirito.my/api/chatgpt?q=${encodeURIComponent(text)}&apikey=by_deylin`;
+    // Nuevo endpoint con parámetros prompt y country
+    const url = `https://api.dorratz.com/ai/gpt?prompt=${encodeURIComponent(text)}&country=venezuela`;
     const res = await fetch(url);
     const data = await res.json();
 
@@ -22,6 +23,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 };
 
 handler.tags = ["ia"];
-handler.command = handler.help =['gpt', 'chatgpt']
+handler.command = handler.help = ['gpt', 'chatgpt'];
 
 export default handler;
