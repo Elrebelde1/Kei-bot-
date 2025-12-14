@@ -1,46 +1,29 @@
 
-import fetch from 'node-fetch'
-import { Sticker} from 'wa-sticker-formatter'
+import fetch from "node-fetch";
 
-let handler = async (m, { conn, text, command}) => {
-  const apikey = "sylphy-8238wss"
-  if (!text) return m.reply(`📌 Ejemplo:.${command} Messi`)
+let handler = async (m, { text}) => {
+  if (!text) return m.reply("❗ Ingresa un número o enlace para verificar.");
 
   try {
-    const searchRes = await fetch(`https://api.sylphy.xyz/stickerly/search?q=${encodeURIComponent(text)}&apikey=sylphy-8238wss`)
-    const searchJson = await searchRes.json()
+    const apiUrl = `https://io.tylarz.top/v1/bancheck?url=${encodeURIComponent(text)}`;
+    const res = await fetch(apiUrl);
+    if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
 
-    if (!searchJson.status ||!Array.isArray(searchJson.res) || searchJson.res.length < 4) {
-      return m.reply('❌ No se encontraron suficientes packs de stickers.')
+    const data = await res.json();
+
+    if (data?.banned) {
+      return m.reply("🚫 El número o enlace está *baneado*.");
+} else {
+      return m.reply("✅ El número o enlace *no está baneado*.");
 }
-
-    // Seleccionar 4 packs aleatorios
-    const shuffled = searchJson.res.sort(() => 0.5 - Math.random())
-    const selectedPacks = shuffled.slice(0, 4)
-
-    m.reply(`🎉 Se encontraron 4 packs\n📦 Enviando 1 sticker de cada uno...`)
-
-    for (let i = 0; i < selectedPacks.length; i++) {
-      const pack = selectedPacks[i]
-      const sticker = new Sticker(pack.thumbnailUrl, {
-        pack: pack.name,
-        author: pack.author || 'Desconocido',
-        type: 'full',
-        categories: ['🔥'],
-        id: `sylphy-pack-${i}`
-})
-      const buffer = await sticker.toBuffer()
-      await conn.sendMessage(m.chat, { sticker: buffer}, { quoted: m})
+} catch (error) {
+    console.error("Error al verificar:", error);
+    return m.reply(`⚠️ Error al verificar: ${error.message}`);
 }
+};
 
-} catch (e) {
-    console.error(e)
-    m.reply('⚠️ Error al procesar los stickers.')
-}
-}
+handler.help = ["bancheck <número o enlace>"];
+handler.tags = ["utilidades"];
+handler.command = ["ban"];
 
-handler.help = ['stikerly <consulta>']
-handler.tags = ['sticker']
-handler.command = /^stikerly$/i
-
-export default handler
+export default handler;
