@@ -1,29 +1,29 @@
 
-import fetch from 'node-fetch'
+import fetch from 'node-fetch';
 
 let handler = async (m, { text, command}) => {
-  const apikey = "sylphy-8238wss";
-
   if (!text ||!text.trim()) {
-    return m.reply(`🎨 *Uso correcto:*\n.${command} <descripción de la imagen>\n📍 Ejemplo:.${command} una ola gigante en el océano al atardecer`);
+    return m.reply(`🎨 *Uso correcto:*\n.${command} <descripción de la imagen>\n📍 Ejemplo:.${command} un dragón volando sobre un castillo`);
 }
 
   try {
     const prompt = text.trim();
-    const url = `https://api.sylphy.xyz/ai/createimg?prompt=${encodeURIComponent(prompt)}&apikey=${apikey}`;
+    const url = `https://nekobot.xyz/api/imagegen?type=changemymind&text=${encodeURIComponent(prompt)}`;
     const res = await fetch(url);
-    const buffer = await res.buffer();
+    const json = await res.json();
 
-    await conn.sendFile(m.chat, buffer, 'imagen.jpg', `🖼️ *Imagen generada con el prompt:*\n"${prompt}"`, m, null, {
-      asSticker: false
-});
+    if (!json ||!json.message) {
+      throw new Error("No se pudo generar la imagen.");
+}
+
+    await conn.sendFile(m.chat, json.message, 'imagen.jpg', `🖼️ *Imagen generada con el prompt:*\n"${prompt}"`, m);
 } catch (e) {
     console.error("Error en.img:", e);
     m.reply("⚠️ Ocurrió un error al generar la imagen.");
 }
 };
 
-handler.help = ['img <descripción>'];
+handler.help = ['img <texto>'];
 handler.tags = ['ai', 'imagen'];
 handler.command = ['img', 'crearimg'];
 
