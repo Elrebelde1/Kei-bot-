@@ -54,7 +54,7 @@ const handler = async (msg, { conn, text}) => {
     const banInfo = data.data;
     const estado = banInfo.isBanned? "🚫 *BANEADO*": "✅ *ACTIVO*";
 
-    const mensaje = `╭───⭑ *WHATSAPP STATUS* ⭑───╮\n│\n│  📞 *Número:* ${cleanNumber}\n│  📡 *Estado:* ${estado}\n│\n╰────────────────────╯\n\n> Powered by: *Barboza*`;
+    const mensaje = `╭───⭑ *WHATSAPP STATUS* ⭑───╮\n│\n│  📞 *Número:* ${cleanNumber}\n│  📡 *Estado:* ${estado}\n│\n╰────────────────────╯\n\n> Powered by: *WHT*`;
 
     await conn.sendMessage(chatID, { text: mensaje}, { quoted: msg});
     await conn.sendMessage(chatID, {
