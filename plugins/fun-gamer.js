@@ -2,7 +2,7 @@
 const handler = async (m, { conn, args}) => {
     if (!args[0]) {
         return await conn.sendMessage(m.chat, {
-            text: '❗ *Debes proporcionar un número de teléfono.*\n\nEjemplo:\n`.checkwa 5212345678901`'
+            text: '👿 *Debes proporcionar un número de teléfono.*\n\nEjemplo:\n`.soporte 5212345678901`'
 });
 }
 
@@ -10,22 +10,18 @@ const handler = async (m, { conn, args}) => {
 
     try {
         const [result] = await conn.onWhatsApp(number);
-        if (result?.exists) {
-            await conn.sendMessage(m.chat, {
-                text: `✅ El número *${args[0]}* está *registrado* en WhatsApp.`
+        const estado = result?.exists? '🟢 *En soporte*': '🔴 *Sin soporte*';
+
+        await conn.sendMessage(m.chat, {
+            text: `📱 Estado del número *${args[0]}*:\n${estado}`
 });
-} else {
-            await conn.sendMessage(m.chat, {
-                text: `❌ El número *${args[0]}* *no está registrado* en WhatsApp.`
-});
-}
 } catch (error) {
         await conn.sendMessage(m.chat, {
-            text: `⚠️ No se pudo verificar el número. Puede estar *baneado* o hay un error de conexión.`
+            text: `⚠️ No se pudo verificar el número.`
 });
         console.error('Error al verificar número:', error);
 }
 };
 
-handler.command = ['wa', 'verificarnumero'];
-export default handler;
+handler.command = ['wa'];
+export default handler
