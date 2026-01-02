@@ -2,7 +2,7 @@ Let handler = async (m, { isPrems, conn }) => {
 let time = global.db.data.users[m.sender].lastcofre + 0 
 if (new Date - global.db.data.users[m.sender].lastcofre < 0) throw `⏳ El Trineo de Santa está ocupado. Vuelve en *${msToTime(time - new Date())}* para reclamar tus regalos.`
 
-let img = 'https://files.catbox.moe/lh55jm.jpg' // Considera usar una imagen de fondo navideña
+let img = 'https://qu.ax/Ny958' // Considera usar una imagen de fondo navideña
 
 let texto = `
 🎁🔔 *𝕄𝔼ℕ𝕌́ 𝔽𝔼𝕊𝕋𝕀𝕍𝕆 𝔻𝔼 𝕃𝕆𝔾𝕆𝕊* ❄️🎄
