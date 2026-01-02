@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 
 let handler = async (m, { text, usedPrefix, args, conn }) => {
   if (!text) {
-    return m.reply(`🔍 Por favor, dime qué imágenes deseas buscar en *Google*.\n\n📌 Ejemplo: ${usedPrefix}gimage gatos tiernos`)
+    return m.reply(`🔍 Por favor, dime qué imágenes deseas buscar en *Google*.\n\n📌 Ejemplo: ${usedPrefix}googleimg gatos tiernos`)
   }
 
   const query = encodeURIComponent(text.trim())
