@@ -45,7 +45,7 @@ const handler = async (m, { conn, text, command }) => {
     // Descargar audio
     const apiRes = await fetch(`https://delirius-apiofc.vercel.app/download/soundcloud?url=${encodeURIComponent(track.link)}`);
     const api = await apiRes.json();
-    const dl = api.url;
+    const dl = api?.data?.download; // ✅ CORREGIDO
 
     if (!dl) return m.reply("❌ *No se pudo obtener el audio.*");
 
@@ -71,6 +71,6 @@ const handler = async (m, { conn, text, command }) => {
 
 handler.help = ["play"];
 handler.tags = ["descargas", "soundcloud"];
-handler.command = ["soundcloud"]; // corregí el typo
+handler.command = ["sound"];
 
 export default handler;
