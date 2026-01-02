@@ -1,42 +1,35 @@
-import fetch from "node-fetch"
-import yts from 'yt-search'
+import fetch from 'node-fetch'
 
 const handler = async (m, { conn, text, usedPrefix, command}) => {
   try {
-    if (!text.trim()) return conn.reply(m.chat, `❀ Por favor, ingresa el nombre del video a descargar.`, m)
+    if (!text) return conn.reply(m.chat, '❀ Por favor, proporciona un enlace de YouTube.', m)
     await m.react('🕒')
-    const videoMatch = text.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/|v\/))([a-zA-Z0-9_-]{11})/)
-    const query = videoMatch? 'https://youtu.be/' + videoMatch[1]: text
-    const search = await yts(query)
-    const result = videoMatch? search.videos.find(v => v.videoId === videoMatch[1]) || search.all[0]: search.all[0]
-    if (!result) throw 'ꕥ No se encontraron resultados.'
-    const { title, thumbnail, timestamp, views, ago, url, author, seconds} = result
-    if (seconds> 1800) throw '⚠ El contenido supera el límite de duración (10 minutos).'
-    const vistas = formatViews(views)
-    const info = `「✦」Descargando *<${title}>*\n\n> ❑ Canal » *${author.name}*\n> ♡ Vistas » *${vistas}*\n> ✧︎ Duración » *${timestamp}*\n> ☁︎ Publicado » *${ago}*\n> ➪ Link » ${url}`
-    const thumb = (await conn.getFile(thumbnail)).data
-    await conn.sendMessage(m.chat, { image: thumb, caption: info}, { quoted: m})
 
-    // Solo permite ytmp4
-    if (command === 'ytmp4') {
-      const video = await getVid(url)
-      if (!video?.url) throw '⚠ No se pudo obtener el video.'
-      m.reply(`> ❀ *Vídeo procesado. Servidor:* \`${video.api}\``)
-      await conn.sendFile(m.chat, video.url, `${title}.mp4`, `> ❀ ${title}`, m)
-      await m.react('✔️')
-} else {
-      throw '⚠ Este comando solo permite descargar videos con *ytmp4*.'
-}
+    const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+    const match = text.match(ytRegex)
+    if (!match) throw '⚠ Enlace de YouTube no válido.'
+
+    const videoUrl = `https://youtu.be/${match[1]}`
+    const apiUrl = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(videoUrl)}&quality=360`
+
+    const res = await fetch(apiUrl)
+    const json = await res.json()
+
+    if (!json.result?.download?.url) throw '⚠ No se pudo obtener el video.'
+
+    const title = json.result.title || 'video'
+    const downloadUrl = json.result.download.url
+
+    await conn.sendFile(m.chat, downloadUrl, `${title}.mp4`, `> ❀ *${title}*\n> ✅ Video descargado en calidad 360p`, m)
+    await m.react('✔️')
 } catch (e) {
     await m.react('✖️')
-    return conn.reply(m.chat, typeof e === 'string'? e: '⚠︎ Se ha producido un problema.\n> Usa *' + usedPrefix + 'report* para informarlo.\n\n' + e.message, m)
+    conn.reply(m.chat, typeof e === 'string'? e: '⚠ Ocurrió un error al procesar el video.', m)
 }
 }
 
 handler.command = handler.help = ['ytmp4']
 handler.tags = ['descargas']
-handler.group = true
+handler.group = false // o true si deseas que solo funcione en grupos
 
 export default handler
-
- Las funciones auxiliares (getVid, fetchFromApis, formatViews)
