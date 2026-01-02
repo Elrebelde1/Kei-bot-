@@ -33,11 +33,12 @@ const handler = async (m, { conn, text, command }) => {
 📥 *Procesando tu descarga...*
 `;
 
-    // Miniatura
+    // Mostrar miniatura + caption
     if (track.image) {
-      const thumbnailRes = await fetch(track.image);
-      const thumbnail = await thumbnailRes.buffer();
-      await conn.sendFile(m.chat, thumbnail, "thumb.jpg", caption, m);
+      await conn.sendMessage(m.chat, { 
+        image: { url: track.image }, 
+        caption 
+      }, { quoted: m });
     } else {
       await m.reply(caption);
     }
@@ -49,17 +50,13 @@ const handler = async (m, { conn, text, command }) => {
 
     if (!dl) return m.reply("❌ *No se pudo obtener el audio.*");
 
-    const fileRes = await fetch(dl);
-    const contentLength = fileRes.headers.get("Content-Length");
-    const bytes = parseInt(contentLength || 0, 10);
-    const sizeMB = bytes / (1024 * 1024);
-    const sendAsDoc = sizeMB >= limit;
-
-    await conn.sendFile(m.chat, dl, `${track.title}.mp3`, "", m, null, {
-      asDocument: sendAsDoc,
+    // Enviar como audio reproducible en Android/iPhone
+    await conn.sendMessage(m.chat, {
+      audio: { url: dl },
       mimetype: "audio/mpeg",
-      ptt: false
-    });
+      fileName: `${track.title}.mp3`,
+      caption: `🎶 ${track.title} - ${track.artist}`
+    }, { quoted: m });
 
     await m.react("✅");
 
