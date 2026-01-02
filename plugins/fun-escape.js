@@ -1,12 +1,12 @@
 import fetch from 'node-fetch'
 
-let handler = async (m, { text, usedPrefix, args }) => {
+let handler = async (m, { text, usedPrefix, args, conn }) => {
   if (!text) {
     return m.reply(`🔍 Por favor, dime qué imágenes deseas buscar en *Google*.\n\n📌 Ejemplo: ${usedPrefix}gimage gatos tiernos`)
   }
 
   const query = encodeURIComponent(text.trim())
-  const maxResults = Math.min(Number(args[1]) || 7, 10)
+  const maxResults = Math.min(Number(args[1]) || 5, 10) // máximo 10 imágenes
   const apiUrl = `https://delirius-apiofc.vercel.app/search/gimage?query=${query}`
 
   try {
@@ -19,13 +19,13 @@ let handler = async (m, { text, usedPrefix, args }) => {
       return m.reply('😕 No se encontraron imágenes para tu búsqueda.')
     }
 
-    let reply = `🖼️ *Imágenes encontradas para:* _${text}_\n\n`
-    json.data.slice(0, maxResults).forEach((item, i) => {
-      reply += `✨ *${i + 1}*\n`
-      reply += `🔗 ${item.url || '_Sin enlace disponible_'}\n\n`
-    })
+    // Enviar cada imagen directamente
+    for (let item of json.data.slice(0, maxResults)) {
+      if (item.url) {
+        await conn.sendMessage(m.chat, { image: { url: item.url }, caption: `🖼️ Resultado para: ${text}` }, { quoted: m })
+      }
+    }
 
-    await m.reply(reply.trim())
     await m.react('✅')
   } catch (err) {
     await m.react('⚠️')
