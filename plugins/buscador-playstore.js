@@ -1,13 +1,17 @@
-
 import fetch from 'node-fetch';
 
 const handler = async (m, { conn, args }) => {
   if (!args[0]) {
-    return conn.reply(m.chat, '🤖 Por favor, proporciona el nombre de la aplicación que deseas buscar.\nEjemplo: .playstore WhatsApp', m);
+    return conn.reply(
+      m.chat,
+      '🤖 Por favor, proporciona el nombre de la aplicación que deseas buscar.\nEjemplo: .playstore WhatsApp',
+      m
+    );
   }
 
   const query = args.join(' ');
-  const apiUrl = `https://api.vreden.my.id/api/playstore?query=${encodeURIComponent(query)}`;
+  // Usamos la API de Delirius
+  const apiUrl = `https://delirius-apiofc.vercel.app/search/playstore?q=${encodeURIComponent(query)}`;
 
   try {
     await m.react('⏳');
@@ -15,13 +19,17 @@ const handler = async (m, { conn, args }) => {
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    if (!data || !data.result || data.result.length === 0) {
+    if (!data || !data.data || data.data.length === 0) {
       return conn.reply(m.chat, '❌ No se encontraron aplicaciones. Intenta con otro nombre.', m);
     }
 
     let results = `📱 *Resultados de la búsqueda en Play Store para:* ${query}\n\n`;
-    data.result.forEach((app, index) => {
-      results += `🔗 [Enlace ${index + 1}](${app.link || 'Enlace no disponible'})\n`;
+    data.data.forEach((app, index) => {
+      results += `*${index + 1}. ${app.name}*\n`;
+      results += `👨‍💻 Desarrollador: ${app.developer}\n`;
+      results += `⭐ Rating: ${app.rating}\n`;
+      results += `🔗 Enlace: ${app.link}\n`;
+      results += `🖼️ Imagen: ${app.image}\n\n`;
     });
 
     await conn.reply(m.chat, results.trim(), m);
