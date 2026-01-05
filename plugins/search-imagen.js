@@ -27,6 +27,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 };
 
 handler.tags = ["ia"];
-handler.command = handler.help = ["iaimg", "imagen"];
+handler.command = handler.help = ["iaimg", "imagen","img"];
 
 export default handler;
