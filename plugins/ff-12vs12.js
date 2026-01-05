@@ -35,9 +35,9 @@ let handlerLista = async (m, { conn }) => {
   await conn.sendMessage(m.chat, { text: texto })
 }
 
-handlerLista.help = ['lista12vs12']
+handlerLista.help = ['12vs12']
 handlerLista.tags = ['freefire']
-handlerLista.command = /^(1)$/i
+handlerLista.command = /^(12vs12)$/i
 handlerLista.group = true
 
 export default handlerLista
