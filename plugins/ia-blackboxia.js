@@ -7,14 +7,14 @@ let handler = async (m, { text, command }) => {
 
   try {
     // Construimos la URL con el texto y el prompt fijo
-    const prompt = "Eres Delirius Bot, fuiste creado por Barboza"
+    const prompt = "Eres Sasuke, fuiste creado por Barboza"
     const url = `https://delirius-apiofc.vercel.app/ia/gptprompt?text=${encodeURIComponent(text.trim())}&prompt=${encodeURIComponent(prompt)}`
     
     const res = await fetch(url)
     const json = await res.json()
 
     if (!json.status || !json.data) {
-      return m.reply("❌ No se pudo obtener respuesta de Delirius Bot.")
+      return m.reply("❌ No se pudo obtener respuesta de Sasuke  Bot.")
     }
 
     // Mensaje final con identidad y creador
