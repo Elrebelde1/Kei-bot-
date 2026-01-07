@@ -11,9 +11,9 @@ const handler = async (m, { conn, text }) => {
 
     if (!json.status || !json.data?.length) throw '⚠ No se encontraron resultados.'
 
-    // Mostrar descripción + link
+    // Solo mostrar las descripciones
     const results = json.data.map((item, i) => 
-      `🔎 *Resultado ${i+1}:*\n${item.description}\n🌐 Link: ${item.link || 'No disponible'}`
+      `🔎 *Resultado ${i+1}:*\n${item.description}`
     ).join('\n\n')
 
     await conn.reply(m.chat, `> 📡 *Resultados de YahooSearch para:* ${text}\n\n${results}`, m)
