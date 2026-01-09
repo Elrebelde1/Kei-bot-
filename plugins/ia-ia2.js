@@ -15,7 +15,7 @@ const { imageMessage } = await generateWAMessageContent({ image: { url } }, { up
 return imageMessage
 }
 let push = []
-let api = await fetch(`https://delirius-apiofc.vercel.app/search/bingimage?query=${encodeURIComponent(text)}`)
+let api = await fetch(`https://api.delirius.store/search/bingimage?query=${encodeURIComponent(text)}`)
 let json = await api.json()
 if (!json.results || json.results.length === 0) return m.reply('No se encontraron imágenes para tu búsqueda.')
 for (let item of json.results.slice(0, 5)) {
