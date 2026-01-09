@@ -21,7 +21,7 @@ let handler = async (m, { conn, text, command }) => {
     m.reply(`🎉 Pack encontrado: *${packName}* de *${authorName}*\n📦 Enviando 5 stickers...`)
 
     // Descargar stickers del pack
-    const downloadRes = await fetch(`https://delirius-apiofc.vercel.app/download/stickerly?url=${encodeURIComponent(pick.url)}`)
+    const downloadRes = await fetch(`https://api.delirius.store/download/stickerly?url=${encodeURIComponent(pick.url)}`)
     const downloadJson = await downloadRes.json()
 
     if (!downloadJson.status || !downloadJson.data || !Array.isArray(downloadJson.data.stickers)) {
