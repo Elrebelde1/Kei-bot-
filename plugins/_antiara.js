@@ -1,47 +1,39 @@
-
 import fetch from "node-fetch";
 
-let handler = async (m, { text, usedPrefix, command}) => {
-  const apikey = "sylphy-8238wss";
-
-  if (!text ||!text.trim()) {
-    return m.reply(`📌 *Uso correcto:*\n${usedPrefix + command} <nombre de la canción>\n📍 *Ejemplo:* ${usedPrefix + command} Lupita`);
-}
+let handler = async (m, { text, usedPrefix, command }) => {
+  if (!text || !text.trim()) {
+    return m.reply(`📌 *Uso correcto:*\n${usedPrefix + command} <nombre de la canción>\n📍 *Ejemplo:* ${usedPrefix + command} Feel Special`);
+  }
 
   await m.react("🎵");
 
   try {
-    const url = `https://api.sylphy.xyz/tools/lyrics?q=${encodeURIComponent(text.trim())}&apikey=${apikey}`;
+    // Nueva URL de la API de Delirius
+    const url = `https://api.delirius.store/search/lyrics?query=${encodeURIComponent(text.trim())}`;
     const res = await fetch(url);
     const json = await res.json();
 
-    // Verifica si hay letra disponible
-    const lyrics = json?.info?.lyrics;
-    if (!json.status ||!lyrics) {
+    // Verificación basada en la estructura de Delirius
+    if (!json.status || !json.data) {
       return m.reply("❌ No se encontró la letra de esa canción.");
-}
+    }
 
-    const title = json?.info?.title || text.trim();
-    const artist = json?.info?.artist || "Desconocido";
-    const album = json?.info?.album?.title || "Desconocido";
-    const preview = json?.info?.preview || "";
+    const { title, artists, album, lyrics } = json.data;
 
     const caption = `
-🎶 *${title}* — *${artist}*
-💿 Álbum: ${album}
+🎶 *${title}* — *${artists}*
+💿 *Álbum:* ${album}
 
 📝 *Letra:*
-${lyrics.slice(0, 1000)}...
-
-${preview? `🔊 [Escuchar preview](${preview})`: ""}
-`;
+${lyrics}
+`.trim();
 
     await m.reply(caption);
     await m.react("✅");
-} catch (error) {
+  } catch (error) {
     console.error("❌ Error:", error);
     m.reply("⚠️ *Ocurrió un error al obtener la letra.*");
-}
+  }
 };
 
 handler.help = ["letra <nombre>", "lyrics <nombre>"];
