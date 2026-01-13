@@ -1,97 +1,52 @@
 import yts from "yt-search";
 import fetch from "node-fetch";
 
-const handler = async (m, { conn, text, command, usedPrefix }) => {
-  if (!text || !text.trim()) {
-    return m.reply(`🦅 *¿Qᴜᴇ ʙᴜsᴄᴀs ᴇɴ ʟᴀ ᴏsᴄᴜʀɪᴅᴀᴅ?*\n\nUsᴏ ᴄᴏʀʀᴇᴄᴛᴏ:\n${usedPrefix + command} <ɴᴏᴍʙʀᴇ ᴏ URL>\n\nEx: ${usedPrefix + command} Ace of Base Happy Nation`);
-  }
+const handler = async (m, { conn, text }) => {
+  if (!text) return m.reply("🎧 *Ingresa el nombre de un video o una URL de YouTube.*");
 
-  await m.react("👁️");
+  await m.react("🔎");
 
   try {
-    // 1. Búsqueda de metadatos
     const search = await yts(text);
-    const video = search.videos[0];
+    const video = search?.videos?.[0];
 
-    if (!video) {
-      await m.react("❌");
-      return m.reply("🌑 *Mis ojos no ven nada con ese nombre.*");
+    if (!video) return m.reply("❌ *No se encontraron resultados.*");
+
+    // Usando la API de Vreden proporcionada en tu consulta
+    const apiUrl = `https://api.vreden.my.id/api/v1/download/play/audio?query=${encodeURIComponent(video.url)}`;
+    const response = await fetch(apiUrl);
+    const json = await response.json();
+
+    if (!json.status || !json.result.download.url) {
+      return m.reply("⚠️ *Error al convertir el audio con la API de Vreden.*");
     }
-
-    const { title, author, timestamp, views, thumbnail, url: urlToUse } = video;
-    const isVideo = /play2|playvid/i.test(command);
 
     const caption = `
-╭─〔 ♆ *Uᴄʜɪʜᴀ Pʟᴀʏᴇʀ* ♆ 〕─╮
+╭─🎶 *Sasuke Bot - Audio* 🎶─╮
 │
-│ 🗡️ *Tɪᴛᴜʟᴏ:* ${title}
-│ 👤 *Aᴜᴛᴏʀ:* ${author.name}
-│ ⏳ *Dᴜʀᴀᴄɪᴏɴ:* ${timestamp}
-│ 👁️ *Vɪsᴛᴀs:* ${views.toLocaleString()}
-│ 🔗 *Lɪɴᴋ:* ${urlToUse}
-│
-╰─────────────────────╯
+│ 🎵 *Título:* ${json.result.metadata.title}
+│ 👤 *Canal:* ${json.result.metadata.author.name}
+│ ⏱️ *Duración:* ${json.result.metadata.timestamp}
+│ 📥 *Enviando archivo...*
+╰──────────────────────────╯`;
 
-🌑 *Eʟ ᴘᴏᴅᴇʀ sᴇ ᴇsᴛᴀ ᴄᴀɴᴀʟɪᴢᴀɴᴅᴏ...*`.trim();
+    // Enviar miniatura y mensaje de descarga
+    await conn.sendFile(m.chat, json.result.metadata.thumbnail, "thumb.jpg", caption, m);
 
-    await conn.sendFile(m.chat, thumbnail, "thumb.jpg", caption, m);
+    // Enviar el archivo de audio directamente
+    await conn.sendMessage(m.chat, {
+      audio: { url: json.result.download.url },
+      mimetype: 'audio/mpeg',
+      fileName: `${json.result.metadata.title}.mp3`
+    }, { quoted: m });
 
-    let dlUrl = null;
+    await m.react("✅");
 
-    // 2. Intento con API Vreden (Ruta Directa de Play)
-    try {
-      const type = isVideo ? "video" : "audio";
-      // Usamos el endpoint /play/ que es más directo si la URL falla
-      const apiVreden = await fetch(`https://api.vreden.my.id/api/v1/download/play/${type}?query=${encodeURIComponent(text)}`);
-      const resVreden = await apiVreden.json();
-      
-      if (resVreden.status && resVreden.result?.download?.url) {
-        dlUrl = resVreden.result.download.url;
-      }
-    } catch (e) {
-      console.log("Error en Vreden Principal");
-    }
-
-    // 3. Backup: API Agatz (Si la anterior falla)
-    if (!dlUrl) {
-      try {
-        const apiBackup = await fetch(`https://api.agatz.xyz/api/yt${isVideo ? "mp4" : "mp3"}?url=${encodeURIComponent(urlToUse)}`);
-        const resBackup = await apiBackup.json();
-        dlUrl = resBackup.data?.url || resBackup.result;
-      } catch (e) {
-        console.log("Error en Backup Agatz");
-      }
-    }
-
-    if (!dlUrl || typeof dlUrl !== 'string') throw new Error("Todas las fuentes de energía han fallado.");
-
-    // 4. Envío del archivo
-    if (isVideo) {
-      await conn.sendMessage(m.chat, {
-        video: { url: dlUrl },
-        mimetype: "video/mp4",
-        fileName: `${title}.mp4`,
-        caption: `⚡ *Aquí tienes tu destino.*`
-      }, { quoted: m });
-      await m.react("🦅");
-    } else {
-      await conn.sendMessage(m.chat, {
-        audio: { url: dlUrl },
-        mimetype: "audio/mpeg",
-        fileName: `${title}.mp3`
-      }, { quoted: m });
-      await m.react("🎧");
-    }
-
-  } catch (error) {
-    console.error(error);
-    await m.react("❌");
-    m.reply(`⚠️ *💢 Mɪs ᴏᴊᴏs ʜᴀɴ sɪᴅᴏ ʙʟᴏϙᴜᴇᴀᴅᴏs.*\n\n*Detalle:* ${error.message}`);
+  } catch (err) {
+    console.error(err);
+    return m.reply("💥 *Hubo un fallo en la solicitud.*");
   }
 };
 
-handler.help = ["play", "play2", "playvid"];
-handler.tags = ["descargas"];
-handler.command = /^(play|play2|playvid)$/i;
-
+handler.command = ["play2", "vreden"]; // Nombres de comando ejemplo
 export default handler;
