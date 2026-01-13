@@ -5,7 +5,7 @@ import { webp2png} from '../lib/webp2mp4.js'
 
 let handler = async (m, { conn, args, usedPrefix, command}) => {
   let stiker = false
-  const emoji = '✨'
+  const emoji = '🦅'
 
   try {
     let q = m.quoted? m.quoted: m
@@ -13,24 +13,22 @@ let handler = async (m, { conn, args, usedPrefix, command}) => {
 
     if (/webp|image|video/g.test(mime)) {
       if (/video/g.test(mime) && (q.msg || q).seconds> 15) {
-        return m.reply(`📽️ *Demasiado largo...*\nTu video excede los 15 segundos. Por favor, usa uno más corto para poder hacer el sticker.`)
+        return m.reply(`⚡ *Lɪᴍɪᴛᴇ Exᴄᴇᴅɪᴅᴏ...*\n\nNᴏ ᴛᴇɴɢᴏ ᴛɪᴇᴍᴘᴏ ᴘᴀʀᴀ ᴠɪᴅᴇᴏs ʟᴀʀɢᴏs. Mᴀxɪᴍᴏ 15 sᴇɢᴜɴᴅᴏs.`)
 }
 
       let img = await q.download?.()
       if (!img) {
+        // --- AHORA ESTE ESTÁ ABAJO EN LA LÓGICA DE ERROR ---
         return conn.reply(m.chat,
-`╭─〔 🌟 *CREADOR DE STICKERS* 🌟 〕─╮
+`╭─〔 ⛈️ *Sʜɪᴅᴏʀɪ Fᴀɪʟ* ⛈️ 〕─╮
 │
-│ 🖼️ *Envía una imagen o video corto*
-│     para generar tu sticker personalizado.
+│ ❌ *Fᴀʟʟᴏ ᴇʟ Jᴜᴛsᴜ:*
+│    Nᴏ sᴇ ᴘᴜᴅᴏ ᴄʀᴇᴀʀ ᴇʟ sᴛɪᴄᴋᴇʀ.
 │
-│ ⏱️ *Máx. duración de video:* 15 segundos
+│ 📌 *Asᴇɢᴜʀᴀᴛᴇ ᴅᴇ ᴇɴᴠɪᴀʀ ᴍᴇᴅɪᴀ*
+│    ᴏ ᴜɴ ʟɪɴᴋ ᴅᴇʀᴇᴄᴛᴏ.
 │
-│ 🌐 También puedes usar un enlace:
-│     *.sticker https://ejemplo.com/imagen.png*
-│
-│ 🚀 ¡Exprésate con estilo!
-╰──────────────────────────────╯`, m, rcanal)
+╰───────────────────────────╯`, m, fake)
 }
 
       let out
@@ -54,23 +52,27 @@ let handler = async (m, { conn, args, usedPrefix, command}) => {
       if (isUrl(args[0])) {
         stiker = await sticker(false, args[0], global.packsticker, global.packsticker2)
 } else {
-        return m.reply(`⚠️ *URL no válida.* Por favor, verifica el enlace e intenta nuevamente.`)
+        return m.reply(`💢 *Eʀʀᴏʀ ᴅᴇ Rᴇɴᴇɢᴀᴅᴏ:* Esᴀ URL ɴᴏ ᴇs ᴠᴀʟɪᴅᴀ.`)
 }
 }
 } finally {
     if (stiker) {
       conn.sendFile(m.chat, stiker, 'sticker.webp', '', m, rcanal)
 } else {
+      // --- AHORA ESTE ES EL MENSAJE DE ENTRADA/AYUDA ---
       return conn.reply(m.chat,
-`╭─〔 🤖 *STICKER BOT* 🤖 〕─╮
+`╭─〔 ♆ *Uᴄʜɪʜᴀ Sᴛɪᴄᴋᴇʀ* ♆ 〕─╮
 │
-│ ❌ No se pudo crear el sticker.
+│ 👁️ *Eɴᴠɪᴀ ᴜɴᴀ ɪᴍᴀɢᴇɴ ᴏ ᴠɪᴅᴇᴏ*
+│      ᴘᴀʀᴀ ᴍᴏsᴛʀᴀʀ ᴛᴜ ᴘᴏᴅᴇʀ.
 │
-│ 📥 Asegúrate de enviar una imagen o video
-│     válido, o prueba con un enlace directo.
+│ ⏳ *Tɪᴇᴍᴘᴏ ʟɪᴍɪᴛᴇ:* 15s
 │
-│ 📌 Si necesitas ayuda, usa *.menu*
-╰────────────────────────────╯`, m, fake)
+│ 🔗 *O ᴜsᴀ ᴜɴ ᴇɴʟᴀᴄᴇ:*
+│     ${usedPrefix + command} ᴜʀʟ
+│
+│ 🌑 "Lᴀ ᴏsᴄᴜʀɪᴅᴀᴅ ᴇs ᴍɪ ɢᴜɪᴀ"
+╰────────────────────────────╯`, m, rcanal)
 }
 }
 }
