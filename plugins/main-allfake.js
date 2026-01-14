@@ -41,9 +41,9 @@ var handler = async function (m, conn, db) {
     let pushname = m.pushName || 'Sin nombre'
 
     // Datos generales del bot
-    let creador = 'Wa.me/584146277368'
+    let creador = 'Wa.me/56966352834'
     let ofcbot = conn.user.jid.split('@')[0]
-    let asistencia = 'Wa.me/5804146277368'
+    let asistencia = 'Wa.me/56966352834'
 
     // Lista de canales
     let canalIdM = [
@@ -118,7 +118,7 @@ var handler = async function (m, conn, db) {
             externalAdReply: {
                 showAdAttribution: true,
                 title: "Texto del bot",
-                body: '🚀 ♡↝Barboza𝐐𐑂𐐲',
+                body: '🚀 ♡↝𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾',
                 previewType: "PHOTO",
                 thumbnailUrl: "https://qu.ax/QGAVS.jpg",
                 sourceUrl: "https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18",
