@@ -17,7 +17,7 @@ let handler = async (m, { conn, prefix, command }) => {
 
     const enhancedBuffer = await ihancer(media, { method: 1, size: 'high' });
 
-    const caption = `✨ *Imagen mejorada con éxito*\n⚙️ Método: iHancer AI\n🔝 Calidad: High\n🔥 By: Sasuke Bot`;
+    const caption = `✨ *Imagen mejorada con éxito*\n⚙️ Método: iHancer AI\n🔝 Calidad: High\n🔥 By: 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾`;
 
     await conn.sendMessage(m.chat, {
       image: enhancedBuffer,
