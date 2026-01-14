@@ -9,7 +9,7 @@ const handler = async (m, { isPrems, conn }) => {
     throw `⏳ El sistema está procesando otros pedidos. Vuelve en *${wait}*.`
   }
 
-  const img = 'https://qu.ax/PVER5' // Imagen actualizada
+  const img = 'https://files.catbox.moe/aosovz.jpg' // Imagen actualizada
   const texto = `
 🎨💎 *𝕄𝔼ℕ𝕌́ 𝔻𝔼 𝔻𝕀𝕊𝔼ℕ̃𝕆𝕊 - 𝕃𝕆𝔾𝕆𝕊* 💎🎨
 ––––––––––––––––––––––––––––––––––––––
