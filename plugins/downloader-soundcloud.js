@@ -4,10 +4,10 @@ const limit = 100;
 
 const handler = async (m, { conn, text, command }) => {
   if (!text || !text.trim()) {
-    return m.reply("🔎 *Por favor ingresa el nombre de una canción o una URL de SoundCloud.*");
+    return m.reply("🔎 *¿Qué deseas escuchar? Ingresa el nombre de la canción o URL de SoundCloud.*");
   }
 
-  await m.react("🎶");
+  await m.react("🎧");
 
   try {
     // Buscar en SoundCloud
@@ -15,23 +15,27 @@ const handler = async (m, { conn, text, command }) => {
     const data = await res.json();
 
     if (!data || !data.data || data.data.length === 0) {
-      return m.reply("❌ *No se encontraron resultados para tu búsqueda.*");
+      await m.react("❌");
+      return m.reply("❌ *No se encontraron resultados en el servidor real.*");
     }
 
     const track = data.data[0]; // Primer resultado
     const caption = `
-╭─[*Sasuke SoundCloud*]─╮
-│
-│ 📌 *Título:* ${track.title}
-│ 👤 *Autor:* ${track.artist}
-│ ⏱️ *Duración:* ${Math.floor(track.duration / 1000)} segundos
-│ ❤️ *Likes:* ${track.likes}
-│ ▶️ *Reproducciones:* ${track.play}
-│ 🔗 *Enlace:* ${track.link}
-╰──────────────────╯
+╭━━━━〔 ☁️ *SOUNDCLOUD* 〕━━━━┓
+┃
+┃ 🎼 *Título:* ${track.title}
+┃ 👤 *Artista:* ${track.artist}
+┃ ⏱️ *Duración:* ${Math.floor(track.duration / 1000)}s
+┃ ❤️ *Favoritos:* ${track.likes}
+┃ ▶️ *Plays:* ${track.play}
+┃ 🔗 *Link:* ${track.link}
+┃
+┣━━━━━━━━━━━━━━━━━━━━━━┛
+┃ ⚡ *𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾*
+┗━━━━━━━━━━━━━━━━━━━━━━━┛
 
-📥 *Procesando tu descarga...*
-`;
+> 📥 *Enviando frecuencia de audio...*
+`.trim();
 
     // Mostrar miniatura + caption
     if (track.image) {
@@ -46,28 +50,29 @@ const handler = async (m, { conn, text, command }) => {
     // Descargar audio
     const apiRes = await fetch(`https://api.delirius.store/download/soundcloud?url=${encodeURIComponent(track.link)}`);
     const api = await apiRes.json();
-    const dl = api?.data?.download; // ✅ CORREGIDO
+    const dl = api?.data?.download; 
 
-    if (!dl) return m.reply("❌ *No se pudo obtener el audio.*");
+    if (!dl) return m.reply("❌ *Error al extraer la pista de audio.*");
 
-    // Enviar como audio reproducible en Android/iPhone
+    // Enviar como audio
     await conn.sendMessage(m.chat, {
       audio: { url: dl },
       mimetype: "audio/mpeg",
       fileName: `${track.title}.mp3`,
-      caption: `🎶 ${track.title} - ${track.artist}`
+      ptt: false // Cambiar a true si prefieres que se envíe como nota de voz
     }, { quoted: m });
 
     await m.react("✅");
 
   } catch (error) {
     console.error("❌ Error:", error);
-    return m.reply("⚠️ *Ocurrió un error al procesar tu solicitud.*");
+    await m.react("⚠️");
+    return m.reply("⚠️ *El sistema central encontró un error al procesar la descarga.*");
   }
 };
 
-handler.help = ["play"];
-handler.tags = ["descargas", "soundcloud"];
-handler.command = ["sound"];
+handler.help = ["sound"];
+handler.tags = ["descargas"];
+handler.command = /^(sound|soundcloud|scdl)$/i;
 
 export default handler;
