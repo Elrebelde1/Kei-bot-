@@ -148,11 +148,11 @@ const sendAudioWithRetry = async (conn, chat, audioUrl, videoTitle, maxRetries =
     contextInfo: {
       externalAdReply: {
         title: videoTitle,
-        body: sendAsDocument ? "📁 Sasuke ʙᴏᴛ - ᴅᴏᴄᴜᴍᴇɴᴛᴏ" : "𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾™",
+        body: sendAsDocument ? "📁 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 - ᴅᴏᴄᴜᴍᴇɴᴛᴏ" : "𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾™",
         previewType: 'PHOTO',
         thumbnail: thumbnailBuffer,
         mediaType: 1,
-        sourceUrl: 'https://Sasuke.Bot.Com'
+        sourceUrl: 'https://Benja.Bot.Com'
       }
     }
   };
