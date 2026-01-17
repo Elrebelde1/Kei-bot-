@@ -14,7 +14,7 @@ export async function before(m, { conn, isAdmin, isBotAdmin, isOwner, isROwner, 
     
     if (chat.antiLinkxxx && isAdultLink && !isAdmin) {
         await conn.sendMessage(m.chat, { 
-            text: `⚠️ *「 ENLACE DETECTADO 」* ⚠️\n\n《✧》${user} compartió un enlace prohibido y será eliminado...`, 
+            text: `⚠️ *「 ENLACE DETECTADO 」* ⚠️\n\n《✧》${user} Mando un enlace lo cual está prohibido,serás eliminado..`, 
             mentions: [m.sender] 
         }, { quoted: m });
         
