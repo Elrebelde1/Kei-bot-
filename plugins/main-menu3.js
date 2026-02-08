@@ -1,5 +1,5 @@
 const handler = async (m, { isPrems, conn }) => {
-  // Última vez que reclamó
+  // Registro de tiempo
   const last = global.db.data.users[m.sender].lastcofre || 0
   const now = new Date() * 1
   const cooldown = 0 
@@ -9,9 +9,11 @@ const handler = async (m, { isPrems, conn }) => {
     throw `⏳ El sistema está procesando otros pedidos. Vuelve en *${wait}*.`
   }
 
-  const img = 'https://files.catbox.moe/aosovz.jpg' // Imagen actualizada
+  // Imagen actualizada solicitada
+  const img = 'https://files.catbox.moe/hnlnna.jpg' 
+  
   const texto = `
-🎨💎 *𝕄𝔼ℕ𝕌́ 𝔻𝔼 𝔻𝕀𝕊𝔼ℕ̃𝕆𝕊 - 𝕃𝕆𝔾𝕆𝕊* 💎🎨
+🎨💎 *𝕄𝔼ℕ𝕌́ 𝔻𝔼 𝔻𝕀𝕊𝔼ℕ̃𝕆𝕊 - 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'* 💎🎨
 ––––––––––––––––––––––––––––––––––––––
 
 _¡Crea logos increíbles con un solo comando!_
@@ -53,7 +55,7 @@ _Uso: .comando (texto)_
 ▸ .logovideogaming (texto)
 
 ––––––––––––––––––––––––––––––––––––––
-_🚀 ¡Genera tu identidad visual ahora!_
+_🚀 ¡Genera tu identidad con 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓!_
 `
 
   // Enviar imagen + caption
