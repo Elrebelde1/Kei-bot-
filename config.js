@@ -21,14 +21,14 @@ global.prems = []
 
 global.packname = `[ 𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 👾 ]`
 global.author = '𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓'
-global.stickpack = '𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾'
+global.stickpack = '𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 👾'
 global.stickauth = '𝐊𝐄𝐈𝐒𝐓𝐎𝐏 𝐁𝐎𝐓'
 global.wm = '𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓'
 global.dev = '© 𝙋𝙤𝙬𝙚𝙧𝙚𝙙 𝘽𝙮 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝘽𝙊𝙏'
 global.wait = '🌪️ *Aɢᴜᴀʀᴅᴇ ᴜɴ ᴍᴏᴍᴇɴᴛᴏ, sᴏʏ ʟᴇɴᴛᴏ... ฅ^•ﻌ•^ฅ\n\n> 𝙋𝙤𝙬𝙚𝙧𝙚𝙙 𝘽𝙮 𝐊𝐄𝐈𝐒𝐓𝐎𝐏 𝐁𝐎𝐓 👾 🌪️*'
 global.botname = '[ 𝐊𝐄𝐈 𝐁𝐎𝐓 👾 ]'
-global.textbot = `𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓`
-global.dev = '• 𝙋𝙤𝙬𝙚𝙧𝙚𝙙 𝘽𝙮 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝘽𝙊𝙏'
+global.textbot = `𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓`
+global.dev = '• 𝙋𝙤𝙬𝙚𝙧𝙚𝙙 𝘽𝙮 𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝘽𝙊𝙏'
 global.listo = '*Aquí tiene ฅ^•ﻌ•^ฅ*'
 global.namechannel = '𝐊𝐄𝐈𝐒𝐓𝐎𝐏 𝐁𝐎𝐓 👾'
 global.channel = 'https://whatsapp.com/channel/0029VbC5dkNG3R3dlVy9YZ3Z'
