@@ -1,14 +1,14 @@
 const handler = async (m, { conn }) => {
-  // Imagen actualizada
-  const img = 'https://files.catbox.moe/qqaj1o.jpg' 
-  
+  // Imagen actualizada solicitada
+  const img = 'https://files.catbox.moe/hnlnna.jpg' 
+
   const texto = `
 *╭━━〔 🎵 CAJA MUSICAL 🎵 〕━━╮*
 *┃*
-*┃*  ¡𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾!
-*┃* ➢ 🔔
+*┃* ¡𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾!
+*┃* ➢ 🔔 𝘼𝙪𝙙𝙞𝙤𝙨 𝙀𝙭𝙘𝙡𝙪𝙨𝙞𝙫𝙤𝙨
 *┃*
-*┣━━〔 🎄 CATEGORÍAS 🎄 〕━━*
+*┣━━〔 🎶 CATEGORÍAS 🎶 〕━━*
 *┃*
 *┃* 🎭 *MEMES Y FRASES*
 *┃* ➢ _El Pepe, Basado, Potasio_
