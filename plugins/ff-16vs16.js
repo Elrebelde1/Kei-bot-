@@ -2,87 +2,108 @@ import axios from 'axios'
 
 let handler = async (m, { conn, args}) => {
   if (!args[0]) throw `
-╭─❍ *🔥 RETO 16 VS 16 | 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾*
+╭─❍ *🔥 RETO 16 VS 16 | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾*
 │
 │⏳ *Horario:*
 │🇲🇽 MÉXICO:
 │🇨🇴 COLOMBIA:
 │
 │🎮 *Modalidad:*
-│👥 *Jugadores:*
+│👥 *Jugadores:* 16 VS 16
 │
 │🏆 *Escuadra 1:*
 │   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   🥷🏻 • (3 espacios)
 │
 │🏆 *Escuadra 2:*
 │   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   🥷🏻 • (3 espacios)
 │
 │🏆 *Escuadra 3:*
 │   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   🥷🏻 • (3 espacios)
 │
 │🏆 *Escuadra 4:*
 │   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   🥷🏻 • (3 espacios)
 │
 │🔄 *Suplentes:*
-│   🥷🏻 •
 │   🥷🏻 •
 ╰────────────────────❍
 `
 
-  // Mensaje citado tipo Izumi con imagen y título dinámico
   const encabezados = [
-    "⚡ INVOCACIÓN DE BATALLA | 16x16",
+    "⚡ INVOCACIÓN DE BATALLA | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓",
     "🎖️ RETO MULTIESCUADRA ACTIVADO",
-    "🔥 COMBATE TOTAL - CLAN VS CLAN"
+    "🔥 COMBATE TOTAL | 16 VS 16"
   ]
-  const imagenes = [
-    "https://iili.io/FKVDVAN.jpg",
-    "https://iili.io/FKVbUrJ.jpg",
-    "https://iili.io/HZOHhlx.jpg"
-  ]
-
+  
+  const imgOficial = "https://files.catbox.moe/hnlnna.jpg"
   const titulo = encabezados[Math.floor(Math.random() * encabezados.length)]
-  const img = imagenes[Math.floor(Math.random() * imagenes.length)]
 
-  const thumbnail = Buffer.from(
-    (await axios.get(img, { responseType: 'arraybuffer'})).data
-)
+  let thumbBuffer
+  try {
+    const res = await axios.get(imgOficial, { responseType: 'arraybuffer'})
+    thumbBuffer = Buffer.from(res.data)
+  } catch (err) {
+    thumbBuffer = Buffer.from('')
+  }
 
-  const izumi = {
+  const keistopMsg = {
     key: {
       fromMe: false,
       participant: "0@s.whatsapp.net",
       remoteJid: "status@broadcast"
-},
+    },
     message: {
       orderMessage: {
         itemCount: 16,
+        status: 1,
         message: titulo,
-        footerText: "Sasuke Bot MD",
-        thumbnail: thumbnail,
+        footerText: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
+        thumbnail: thumbBuffer,
         surface: 2,
         sellerJid: "0@s.whatsapp.net"
-}
-}
-}
+      }
+    }
+  }
 
   await conn.sendMessage(m.chat, {
-    image: { url: 'https://cdn.russellxz.click/16b3faeb.jpeg'},
-    caption: `╭─❍ *🔥 16 VS 16 | SASUKE BOT MD*\n│\n│⏳ *Horario:*\n│🇲🇽 MÉXICO: ${args[0]}\n│🇨🇴 COLOMBIA: ${args[0]}\n│\n│🎮 *Modalidad:*\n│👥 *Jugadores:*\n│\n│🏆 *Escuadra 1:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🏆 *Escuadra 2:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🏆 *Escuadra 3:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🏆 *Escuadra 4:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🔄 *Suplentes:*\n│   🥷🏻 • \n│   🥷🏻 • \n╰────────────────────❍`,
+    image: { url: imgOficial },
+    caption: `╭─❍ *🔥 16 VS 16 | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+│
+│⏳ *Horario:*
+│🇲🇽 MÉXICO: ${args[0]}
+│🇨🇴 COLOMBIA: ${args[0]}
+│
+│🎮 *Modalidad:*
+│👥 *Jugadores:* 16 VS 16
+│
+│🏆 *Escuadra 1:*
+│   👑 • 
+│   🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🏆 *Escuadra 2:*
+│   👑 • 
+│   🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🏆 *Escuadra 3:*
+│   👑 • 
+│   🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🏆 *Escuadra 4:*
+│   👑 • 
+│   🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🔄 *Suplentes:*
+│   🥷🏻 •    🥷🏻 • 
+│
+│👾 *𝐁𝐲: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+╰────────────────────❍
+
+📢 *Canal:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`,
     mentions: []
-}, { quoted: izumi})
+}, { quoted: keistopMsg })
 }
 
 handler.help = ['16vs16']
