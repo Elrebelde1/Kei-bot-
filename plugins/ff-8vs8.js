@@ -3,7 +3,7 @@ import axios from 'axios'
 
 let handler = async (m, { conn, args}) => {
   if (!args[0]) throw `
-╭━━━〔 ⚔️ *KING'S VERSUS* ⚔️ 〕━━━┓
+╭━━━〔 ⚔️ *KEISTOP' VERSUS* ⚔️ 〕━━━┓
 ┃
 ┃ ⏳ *HORARIO:*
 ┃ 🇲🇽 MÉXICO: 
@@ -33,23 +33,25 @@ let handler = async (m, { conn, args}) => {
 `
 
   const textos = [
-    "👑 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩: 𝘿𝙤𝙢𝙞𝙣𝙞𝙤 𝙏𝙤𝙩𝙖𝙡",
-    "⚔️ 𝘿𝙪𝙚𝙡𝙤 𝙙𝙚 𝙍𝙚𝙮𝙚𝙨 𝘼𝙘𝙩𝙞𝙫𝙖𝙙𝙤",
-    "👾 𝙎𝙮𝙨𝙩𝙚𝙢 𝙆𝙞𝙣𝙜: 𝘾𝙤𝙣𝙛lict𝙤 8𝙫𝙨8"
+    "👾 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓: DOMINIO TOTAL",
+    "⚔️ DUELO DE TITANES ACTIVADO",
+    "🚀 SYSTEM KEISTOP: CONFLICTO 8VS8"
   ]
-  const imagenes = [
-    "https://iili.io/FKVDVAN.jpg",
-    "https://iili.io/FKVbUrJ.jpg",
-    "https://iili.io/HZOHhlx.jpg"
-  ]
+  
+  // Imagen oficial para todo el sistema
+  const imgOficial = "https://files.catbox.moe/hnlnna.jpg"
 
   const titulo = textos[Math.floor(Math.random() * textos.length)]
-  const imagen = imagenes[Math.floor(Math.random() * imagenes.length)]
-  const thumbBuffer = Buffer.from(
-    (await axios.get(imagen, { responseType: 'arraybuffer'})).data
-  )
+  
+  let thumbBuffer
+  try {
+    const res = await axios.get(imgOficial, { responseType: 'arraybuffer'})
+    thumbBuffer = Buffer.from(res.data)
+  } catch (err) {
+    thumbBuffer = Buffer.from('')
+  }
 
-  const kingMessage = {
+  const keistopMsg = {
     key: {
       fromMe: false,
       participant: "0@s.whatsapp.net",
@@ -57,9 +59,10 @@ let handler = async (m, { conn, args}) => {
     },
     message: {
       orderMessage: {
-        itemCount: 2024,
+        itemCount: 2026,
+        status: 1,
         message: titulo,
-        footerText: "𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾",
+        footerText: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
         thumbnail: thumbBuffer,
         surface: 2,
         sellerJid: "0@s.whatsapp.net"
@@ -68,7 +71,7 @@ let handler = async (m, { conn, args}) => {
   }
 
   const caption = `
-┏━━━━〔 👑 *KING'S 8 VS 8* 👑 〕━━━┓
+┏━━━━〔 👾 *KEISTOP' 8 VS 8* 👾 〕━━━┓
 ┃
 ┃ ⏳ *HORARIOS:*
 ┃ 🇲🇽 MÉXICO: ${args[0]}
@@ -93,14 +96,16 @@ let handler = async (m, { conn, args}) => {
 ┃    👾 • 
 ┃    👾 • 
 ┃
-┃ > ⚡ 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾
-┗━━━━━━━━━━━━━━━━━━━━━━━┛`.trim()
+┃ 👾 *𝐁𝐲: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+┗━━━━━━━━━━━━━━━━━━━━━━━┛
+
+📢 *Canal:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`.trim()
 
   await conn.sendMessage(m.chat, {
-    image: { url: 'https://cdn.russellxz.click/16b3faeb.jpeg'},
+    image: { url: imgOficial },
     caption: caption,
     mentions: []
-  }, { quoted: kingMessage })
+  }, { quoted: keistopMsg })
 }
 
 handler.help = ['8vs8']
