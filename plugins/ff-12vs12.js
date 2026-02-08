@@ -1,43 +1,109 @@
-import fs from 'fs'
-import path from 'path'
 
-let handlerLista = async (m, { conn }) => {
-  const listaPath = path.join('./database/lista12vs12.json')
+import fetch from 'node-fetch'
+import axios from 'axios'
 
-  // Si no existe, lo creamos vacío
-  if (!fs.existsSync(listaPath)) {
-    const inicial = { titulares: [], suplentes: [] }
-    fs.writeFileSync(listaPath, JSON.stringify(inicial, null, 2))
+let handler = async (m, { conn, args}) => {
+  if (!args[0]) throw `
+╭━━━〔 ⚔️ *KEISTOP' VERSUS* ⚔️ 〕━━━┓
+┃
+┃ ⏳ *HORARIO:*
+┃ 🇲🇽 MÉXICO: 
+┃ 🇨🇴 COLOMBIA: 
+┃
+┃ 🎮 *MODALIDAD:*
+┃ 👥 *JUGADORES:* 12 VS 12
+┃
+┃ 🏆 *ESCUADRA A:*
+┃    👑 • 
+┃    ⚡ • (11 espacios disponibles)
+┃
+┃ 🏆 *ESCUADRA B:*
+┃    👑 • 
+┃    ⚡ • (11 espacios disponibles)
+┃
+┃ 💬 *Usa:* .12vs12 [hora]
+┗━━━━━━━━━━━━━━━━━━━━━━━┛
+`
+
+  const textos = [
+    "👾 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓: GUERRA TOTAL",
+    "⚔️ MASACRE 12VS12 ACTIVADA",
+    "🚀 SYSTEM KEISTOP: CONFLICTO MASIVO"
+  ]
+  
+  const imgOficial = "https://files.catbox.moe/hnlnna.jpg"
+  const titulo = textos[Math.floor(Math.random() * textos.length)]
+  
+  let thumbBuffer
+  try {
+    const res = await axios.get(imgOficial, { responseType: 'arraybuffer'})
+    thumbBuffer = Buffer.from(res.data)
+  } catch (err) {
+    thumbBuffer = Buffer.from('')
   }
 
-  const lista = JSON.parse(fs.readFileSync(listaPath, 'utf-8'))
-
-  let texto = `╭─❍ *📋 LISTA 12 VS 12*\n│\n│❤️ *Titulares:*\n`
-  if (lista.titulares.length === 0) {
-    texto += `│ (vacío)\n`
-  } else {
-    lista.titulares.forEach((j, i) => {
-      texto += `│ ${i+1}. ${j}\n`
-    })
+  const keistopMsg = {
+    key: {
+      fromMe: false,
+      participant: "0@s.whatsapp.net",
+      remoteJid: "status@broadcast"
+    },
+    message: {
+      orderMessage: {
+        itemCount: 2026,
+        status: 1,
+        message: titulo,
+        footerText: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
+        thumbnail: thumbBuffer,
+        surface: 2,
+        sellerJid: "0@s.whatsapp.net"
+      }
+    }
   }
 
-  texto += `│\n│👍 *Suplentes:*\n`
-  if (lista.suplentes.length === 0) {
-    texto += `│ (vacío)\n`
-  } else {
-    lista.suplentes.forEach((j, i) => {
-      texto += `│ ${i+1}. ${j}\n`
-    })
-  }
+  const caption = `
+┏━━━━〔 👾 *KEISTOP' 12 VS 12* 👾 〕━━━┓
+┃
+┃ ⏳ *HORARIOS:*
+┃ 🇲🇽 MÉXICO: ${args[0]}
+┃ 🇨🇴 COLOMBIA: ${args[0]}
+┃
+┃ 🎮 *MODALIDAD:*
+┃ 👥 *JUGADORES:* 12 VS 12
+┃
+┃ 🔱 *ESCUADRA 1:*
+┃    👑 • 
+┃    ⚔️ •    ⚔️ •    ⚔️ • 
+┃    ⚔️ •    ⚔️ •    ⚔️ • 
+┃    ⚔️ •    ⚔️ •    ⚔️ • 
+┃    ⚔️ •    ⚔️ • 
+┃
+┃ 🔱 *ESCUADRA 2:*
+┃    👑 • 
+┃    ⚔️ •    ⚔️ •    ⚔️ • 
+┃    ⚔️ •    ⚔️ •    ⚔️ • 
+┃    ⚔️ •    ⚔️ •    ⚔️ • 
+┃    ⚔️ •    ⚔️ • 
+┃
+┃ 🚀 *RESERVAS:*
+┃    👾 •    👾 •    👾 • 
+┃
+┃ 👾 *𝐁𝐲: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+┗━━━━━━━━━━━━━━━━━━━━━━━┛
 
-  texto += `╰────────────────────❍`
+📢 *Canal:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`.trim()
 
-  await conn.sendMessage(m.chat, { text: texto })
+  await conn.sendMessage(m.chat, {
+    image: { url: imgOficial },
+    caption: caption,
+    mentions: []
+  }, { quoted: keistopMsg })
 }
 
-handlerLista.help = ['12vs12']
-handlerLista.tags = ['freefire']
-handlerLista.command = /^(12vs12)$/i
-handlerLista.group = true
+handler.help = ['12vs12']
+handler.tags = ['freefire']
+handler.command = /^(vs12|12vs12|masc12)$/i
+handler.group = true
+handler.admin = false
 
-export default handlerLista
+export default handler
