@@ -132,23 +132,25 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
   let statusIcon = isEnable ? '『 ACTIVADO ✅ 』' : '『 DESACTIVADO ❌ 』';
   let scopeIcon = isAll ? '🌐 Global' : isUser ? '👤 Usuario' : '🏘️ Chat Actual';
 
-  let confirm = `
-👑 *ＴＨＥ   ＫＩＮＧＳ   ＢＯＴ* 👑
-   ━━━━━━━━━━━━━━━━━
-   
-   🛡️ **ESTADO ACTUALIZADO**
-   
-   ✨ *Ajuste:* \`${type}\`
-   📊 *Estado:* ${statusIcon}
-   📍 *Ámbito:* ${scopeIcon}
+    let confirm = `
+🪐 *––––  𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐂𝐎𝐑𝐄  ––––* 🪐
 
-   *Sistema de gestión inteligente*`.trim()
+   ┏━━━━━━━━━━━━━━━━━━━━┓
+   ┃  ⚙️  *PANEL DE CONTROL*
+   ┃
+   ┃  ◈ *MÓDULO:* \`${type}\`
+   ┃  ◈ *ESTADO:* ${statusIcon}
+   ┃  ◈ *ORIGEN:* ${scopeIcon}
+   ┗━━━━━━━━━━━━━━━━━━━━┛
+
+   📡 _Sincronizando cambios en el sistema..._
+   *© 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 𝟐𝟎𝟐𝟔*`.trim()
 
   m.reply(confirm)
 }
 
 handler.help = ['enable', 'disable', 'on', 'off']
-handler.tags = ['nable']
+handler.tags = ['config']
 handler.command = /^(enable|disable|on|off|1|0)$/i
 
 export default handler
