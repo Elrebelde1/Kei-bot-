@@ -7,7 +7,7 @@ function handler(m, { groupMetadata }) {
     let message = `
 ╭──〔 👾 *𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓* 👾 〕──╮
 │
-│ 🤺 *ELECCIÓN DE HOST*
+│ 🤺 *ELECCIÓN DE SALA*
 │
 │ 👤 ${toM(a)}
 │
