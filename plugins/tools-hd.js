@@ -5,7 +5,7 @@ let handler = async (m, { conn, prefix, command }) => {
   try {
     let q = m.quoted ? m.quoted : m;
     let mime = (q.msg || q).mimetype || '';
-    
+
     if (!mime) return m.reply(`📸 Responde a una imagen con el comando *${prefix}${command}* para mejorarla.`);
     if (!mime.startsWith('image')) return m.reply(`⚠️ Solo se admiten imágenes.`);
 
@@ -17,7 +17,7 @@ let handler = async (m, { conn, prefix, command }) => {
 
     const enhancedBuffer = await ihancer(media, { method: 1, size: 'high' });
 
-    const caption = `✨ *Imagen mejorada con éxito*\n⚙️ Método: iHancer AI\n🔝 Calidad: High\n🔥 By: 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾`;
+    const caption = `✨ *Imagen mejorada con éxito*\n⚙️ Método: iHancer AI\n🔝 Calidad: High\n👾 By: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓`;
 
     await conn.sendMessage(m.chat, {
       image: enhancedBuffer,
@@ -49,7 +49,7 @@ async function ihancer(buffer, { method = 1, size = 'low' } = {}) {
     form.append('is_pro_version', 'false')
     form.append('is_enhancing_more', 'false')
     form.append('max_image_size', size)
-    form.append('file', buffer, `benja_${Date.now()}.jpg`)
+    form.append('file', buffer, `keistop_${Date.now()}.jpg`) // Nombre de archivo actualizado
 
     const { data } = await axios.post('https://ihancer.com/api/enhance', form, {
         headers: {
