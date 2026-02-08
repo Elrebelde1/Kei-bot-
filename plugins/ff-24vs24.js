@@ -2,102 +2,112 @@ import axios from 'axios'
 
 let handler = async (m, { conn, args}) => {
   if (!args[0]) throw `
-╭─❍ *🔥 RETO 24 VS 24 | 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾*
+╭─❍ *🔥 RETO 24 VS 24 | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾*
 │
 │⏳ *Horario:*
 │🇲🇽 MÉXICO:
 │🇨🇴 COLOMBIA:
 │
 │🎮 *Modalidad:*
-│👥 *Jugadores:*
+│👥 *Jugadores:* 24 VS 24
 │
 │🥷 *Escuadra 1:*
-│   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   👑 • (4 espacios)
 │
 │🥷 *Escuadra 2:*
-│   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   👑 • (4 espacios)
 │
 │🥷 *Escuadra 3:*
-│   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   👑 • (4 espacios)
 │
 │🥷 *Escuadra 4:*
-│   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   👑 • (4 espacios)
 │
 │🥷 *Escuadra 5:*
-│   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   👑 • (4 espacios)
 │
 │🥷 *Escuadra 6:*
-│   👑 •
-│   🥷🏻 •
-│   🥷🏻 •
-│   🥷🏻 •
+│   👑 • (4 espacios)
 │
 │🔄 *Suplentes:*
-│   🥷🏻 •
 │   🥷🏻 •
 ╰────────────────────❍
 `
 
   const encabezados = [
-    "🎖️ RETO CLAN VS CLAN | 24x24",
+    "🎖️ RETO CLAN VS CLAN | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓",
     "🔥 BATALLA TOTAL ACTIVADA",
     "⚡ ALIANZA MULTIESCUADRA EN PROGRESO"
   ]
-  const imagenes = [
-    "https://iili.io/FKVDVAN.jpg",
-    "https://iili.io/FKVbUrJ.jpg",
-    "https://iili.io/HZOHhlx.jpg"
-  ]
-
+  
+  const imgOficial = "https://files.catbox.moe/hnlnna.jpg"
   const titulo = encabezados[Math.floor(Math.random() * encabezados.length)]
-  const imagen = imagenes[Math.floor(Math.random() * imagenes.length)]
 
   let thumbBuffer = Buffer.alloc(0)
   try {
-    const res = await axios.get(imagen, { responseType: 'arraybuffer'})
+    const res = await axios.get(imgOficial, { responseType: 'arraybuffer'})
     thumbBuffer = Buffer.from(res.data)
-} catch (e) {
+  } catch (e) {
     console.log("Error al cargar imagen:", e)
-}
+  }
 
-  const izumi = {
+  const keistopMsg = {
     key: {
       fromMe: false,
       participant: "0@s.whatsapp.net",
       remoteJid: "status@broadcast"
-},
+    },
     message: {
       orderMessage: {
         itemCount: 24,
+        status: 1,
         message: titulo,
-        footerText: "𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾",
+        footerText: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
         thumbnail: thumbBuffer,
         surface: 2,
         sellerJid: "0@s.whatsapp.net"
-}
-}
-}
+      }
+    }
+  }
 
   await conn.sendMessage(m.chat, {
-    image: { url: 'https://cdn.russellxz.click/16b3faeb.jpeg'},
-    caption: `╭─❍ *🔥 24 VS 24 | 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾*\n│\n│⏳ *Horario:*\n│🇲🇽 MÉXICO: ${args[0]}\n│🇨🇴 COLOMBIA: ${args[0]}\n│\n│🎮 *Modalidad:*\n│👥 *Jugadores:*\n│\n│🥷 *Escuadra 1:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🥷 *Escuadra 2:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🥷 *Escuadra 3:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🥷 *Escuadra 4:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🥷 *Escuadra 5:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🥷 *Escuadra 6:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🔄 *Suplentes:*\n│   🥷🏻 • \n│   🥷🏻 • \n╰────────────────────❍`,
+    image: { url: imgOficial },
+    caption: `╭─❍ *🔥 24 VS 24 | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+│
+│⏳ *Horario:*
+│🇲🇽 MÉXICO: ${args[0]}
+│🇨🇴 COLOMBIA: ${args[0]}
+│
+│🎮 *Modalidad:*
+│👥 *Jugadores:* 24 VS 24
+│
+│🥷 *Escuadra 1:*
+│   👑 •    🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🥷 *Escuadra 2:*
+│   👑 •    🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🥷 *Escuadra 3:*
+│   👑 •    🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🥷 *Escuadra 4:*
+│   👑 •    🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🥷 *Escuadra 5:*
+│   👑 •    🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🥷 *Escuadra 6:*
+│   👑 •    🥷🏻 •    🥷🏻 •    🥷🏻 • 
+│
+│🔄 *Suplentes:*
+│   🥷🏻 •    🥷🏻 • 
+│
+│👾 *𝐁𝐲: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+╰────────────────────❍
+
+📢 *Canal:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`,
     mentions: []
-}, { quoted: izumi})
+}, { quoted: keistopMsg })
 }
 
 handler.help = ['24vs24']
