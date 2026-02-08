@@ -28,7 +28,6 @@ let handler = async (m, { conn, args}) => {
 ┃    👤 • 
 ┃    👤 • 
 ┃
-┃ 💬 *Usa:* .8vs8 [hora]
 ┗━━━━━━━━━━━━━━━━━━━━━━━┛
 `
 
