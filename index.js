@@ -28,15 +28,15 @@ function verify() {
 }
 verify();
 
-// Diseño para "𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾"
-say('Benja', {
+// Diseño para "Keistop bot"
+say('keisitop', {
   font: 'block', // Estilo 'block' para un diseño fuerte
   align: 'center',
   colors: ['red', 'white'], // Colores que recuerdan al Sharingan
   background: 'black' // Fondo oscuro para resaltar el texto
 });
 
-say(`Developed By • 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾`, {
+say(`Developed By • Keistop bot`, {
   font: 'console',
   align: 'center',
   colors: ['magenta']
