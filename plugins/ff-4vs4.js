@@ -34,7 +34,7 @@ let handler = async (m, { conn, args, command, usedPrefix}) => {
     },
     message: {
       locationMessage: {
-        name: '👾 ORGANIZACIÓN | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓',
+        name: '𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓 👾',
         jpegThumbnail: await (await fetch('https://files.catbox.moe/hnlnna.jpg')).buffer(),
         vcard:
           'BEGIN:VCARD\n' +
@@ -45,7 +45,7 @@ let handler = async (m, { conn, args, command, usedPrefix}) => {
           'TITLE:\n' +
           'item1.TEL;waid=5491100000000:+54 9 11 0000-0000\n' +
           'item1.X-ABLabel:KeistopBot\n' +
-          'X-WA-BIZ-DESCRIPTION:Reto organizado vía 𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓 👾\n' +
+          'X-WA-BIZ-DESCRIPTION:Sistema oficial de 𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓\n' +
           'X-WA-BIZ-NAME:𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓\n' +
           'END:VCARD'
       }
@@ -56,10 +56,31 @@ let handler = async (m, { conn, args, command, usedPrefix}) => {
     text: '🎯 *Reto grupal activo | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓 👾*',
   }, { quoted: fkontak })
 
-  // Mensaje visual principal
   await conn.sendMessage(m.chat, {
     image: { url: 'https://files.catbox.moe/hnlnna.jpg' },
-    caption: `╭─❍ *4 VS 4 | RETO 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾* 🔥\n│\n│⏳ *Horario:*\n│🇲🇽 MÉXICO: ${args[0]}\n│🇨🇴 COLOMBIA: ${args[0]}\n│\n│🎮 *Modalidad:*\n│👥 *Jugadores:*\n│\n│🏆 *Escuadra 1:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🧱 *Suplentes:*\n│   🥷🏻 • \n│   🥷🏻 • \n╰───────────────❍\n\n📢 *Canal Oficial:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`,
+    caption: `╭─❍ *4 VS 4 | RETO* 🔥
+│
+│⏳ *Horario:*
+│🇲🇽 MÉXICO: ${args[0]}
+│🇨🇴 COLOMBIA: ${args[0]}
+│
+│🎮 *Modalidad:*
+│👥 *Jugadores:*
+│
+│🏆 *Escuadra 1:*
+│   👑 • 
+│   🥷🏻 • 
+│   🥷🏻 • 
+│   🥷🏻 • 
+│
+│🧱 *Suplentes:*
+│   🥷🏻 • 
+│   🥷🏻 • 
+│
+│👾 *𝐁𝐲: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+╰───────────────❍
+
+📢 *Canal:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`,
     mentions: []
   }, { quoted: fkontak })
 }
