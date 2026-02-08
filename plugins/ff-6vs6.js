@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let handler = async (m, { conn, args}) => {
+let handler = async (m, { conn, args }) => {
   if (!args[0]) throw `
 ╭─❍ *💥 RETO 6 VS 6 💥*
 │
@@ -26,51 +26,73 @@ let handler = async (m, { conn, args}) => {
 `
 
   const mensajes = [
-    "🔥 𝘊𝘖𝘔𝘉𝘈𝘛𝘌 𝘗𝘙𝘌𝘗𝘈𝘙𝘈𝘋𝘖 | 𝘌𝘲𝘶𝘪𝘱𝘰 6𝘟6",
-    "⚡ 𝘙𝘌𝘛𝘖 𝘈𝘊𝘛𝘐𝘝𝘖 | 𝘚𝘦𝘭𝘦𝘤𝘤𝘪ó𝘯 𝘥𝘦 𝘓𝘪𝘥𝘦𝘳𝘦𝘴",
-    "💣 𝘓𝘭𝘢𝘮𝘢𝘥𝘰 𝘎𝘳𝘶𝘱𝘢𝘭 | 𝘌𝘴𝘤𝘶𝘢𝘥𝘳𝘢 𝘎𝘦𝘯𝘦𝘴𝘪𝘴"
+    "🔥 COMBATE PREPARADO | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓",
+    "⚡ RETO ACTIVO | ORGANIZACIÓN FF",
+    "💣 LLAMADO GRUPAL | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓"
   ]
-  const imagenes = [
-    "https://iili.io/FKVDVAN.jpg",
-    "https://iili.io/FKVbUrJ.jpg",
-    "https://iili.io/HZOHhlx.jpg"
-  ]
+  
+  // Imagen oficial para miniaturas
+  const imgOficial = "https://files.catbox.moe/hnlnna.jpg"
 
   const textoRandom = mensajes[Math.floor(Math.random() * mensajes.length)]
-  const imagenRandom = imagenes[Math.floor(Math.random() * imagenes.length)]
 
   let thumbBuffer
   try {
-    const res = await axios.get(imagenRandom, { responseType: 'arraybuffer'})
+    const res = await axios.get(imgOficial, { responseType: 'arraybuffer'})
     thumbBuffer = Buffer.from(res.data)
-} catch (err) {
+  } catch (err) {
     console.error("Error al cargar imagen de miniatura:", err)
     thumbBuffer = Buffer.from('')
-}
+  }
 
-  const izumi = {
+  const keistop = {
     key: {
       fromMe: false,
       participant: "0@s.whatsapp.net",
       remoteJid: "status@broadcast"
-},
+    },
     message: {
       orderMessage: {
         itemCount: 6,
+        status: 1,
         message: textoRandom,
-        footerText: "𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩",
+        footerText: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
         thumbnail: thumbBuffer,
         surface: 2,
         sellerJid: "0@s.whatsapp.net"
-}
-}
-}
+      }
+    }
+  }
 
   await conn.sendMessage(m.chat, {
-    image: { url: 'https://cdn.russellxz.click/16b3faeb.jpeg'},
-    caption: `╭─❍ *💥 6 VS 6 | RETO 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾 💥*\n│\n│⏳ *Horario:*\n│🇲🇽 MÉXICO: ${args[0]}\n│🇨🇴 COLOMBIA: ${args[0]}\n│\n│🎮 *Modalidad:*\n│👥 *Jugadores:*\n│\n│🏆 *Escuadra 1:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🔄 *Suplentes:*\n│   🥷🏻 • \n│   🥷🏻 • \n╰─────────────────❍`,
+    image: { url: imgOficial },
+    caption: `╭─❍ *💥 6 VS 6 | RETO* 💥
+│
+│⏳ *Horario:*
+│🇲🇽 MÉXICO: ${args[0]}
+│🇨🇴 COLOMBIA: ${args[0]}
+│
+│🎮 *Modalidad:*
+│👥 *Jugadores:*
+│
+│🏆 *Escuadra 1:*
+│   👑 • 
+│   🥷🏻 • 
+│   🥷🏻 • 
+│   🥷🏻 • 
+│   🥷🏻 • 
+│   🥷🏻 • 
+│
+│🔄 *Suplentes:*
+│   🥷🏻 • 
+│   🥷🏻 • 
+│
+│👾 *𝐁𝐲: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓*
+╰─────────────────❍
+
+📢 *Canal:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`,
     mentions: []
-}, { quoted: izumi})
+  }, { quoted: keistop })
 }
 
 handler.help = ['6vs6']
