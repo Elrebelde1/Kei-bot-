@@ -4,7 +4,7 @@ import axios from 'axios'
 
 let handler = async (m, { conn, args, command, usedPrefix}) => {
   if (!args[0]) throw `
-╭─❍ *🔱 RETO 4 VS 4 🔱*
+╭─❍ *👾 RETO 4 VS 4 👾*
 │
 │⏳ *Horario:*
 │🇲🇽 MÉXICO:
@@ -30,38 +30,38 @@ let handler = async (m, { conn, args, command, usedPrefix}) => {
       participant: '0@s.whatsapp.net',
       remoteJid: 'status@broadcast',
       fromMe: false,
-      id: 'AlienMenu'
-},
+      id: 'KeistopVS'
+    },
     message: {
       locationMessage: {
-        name: '🛸 INVOCACIÓN GRUPAL | Sasuke Bot MD',
-        jpegThumbnail: await (await fetch('https://files.catbox.moe/1j784p.jpg')).buffer(),
+        name: '👾 ORGANIZACIÓN | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓',
+        jpegThumbnail: await (await fetch('https://files.catbox.moe/hnlnna.jpg')).buffer(),
         vcard:
           'BEGIN:VCARD\n' +
           'VERSION:3.0\n' +
-          'N:;b;;;\n' +
-          'FN:Benja\n' +
-          'ORG:Kaneki Developers\n' +
+          'N:;Keistop;;;\n' +
+          'FN:𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓\n' +
+          'ORG:𝐊𝐄𝐈𝐒𝐓𝐎𝐏\' 𝐂𝐨𝐦𝐮𝐧𝐢𝐭𝐲\n' +
           'TITLE:\n' +
-          'item1.TEL;waid=19709001746:+1 (970) 900-1746\n' +
-          'item1.X-ABLabel:Alien\n' +
-          'X-WA-BIZ-DESCRIPTION:Reto organizado vía 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾\n' +
-          'X-WA-BIZ-NAME:Sasuke\n' +
+          'item1.TEL;waid=5491100000000:+54 9 11 0000-0000\n' +
+          'item1.X-ABLabel:KeistopBot\n' +
+          'X-WA-BIZ-DESCRIPTION:Reto organizado vía 𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓 👾\n' +
+          'X-WA-BIZ-NAME:𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓\n' +
           'END:VCARD'
-}
-}
-}
+      }
+    }
+  }
 
   await conn.sendMessage(m.chat, {
-    text: '🎯 *Reto grupal activo | Sasuke Bot MD*',
-}, { quoted: fkontak})
+    text: '🎯 *Reto grupal activo | 𝐊𝐄𝐈𝐒𝐓𝐎𝐏\'  𝐁𝐎𝐓 👾*',
+  }, { quoted: fkontak })
 
   // Mensaje visual principal
   await conn.sendMessage(m.chat, {
-    image: { url: 'https://cdn.russellxz.click/16b3faeb.jpeg'},
-    caption: `╭─❍ *4 VS 4 | RETO 𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾* 🔥\n│\n│⏳ *Horario:*\n│🇲🇽 MÉXICO: ${args[0]}\n│🇨🇴 COLOMBIA: ${args[0]}\n│\n│🎮 *Modalidad:*\n│👥 *Jugadores:*\n│\n│🏆 *Escuadra 1:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🧱 *Suplentes:*\n│   🥷🏻 • \n│   🥷🏻 • \n╰───────────────❍`,
+    image: { url: 'https://files.catbox.moe/hnlnna.jpg' },
+    caption: `╭─❍ *4 VS 4 | RETO 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾* 🔥\n│\n│⏳ *Horario:*\n│🇲🇽 MÉXICO: ${args[0]}\n│🇨🇴 COLOMBIA: ${args[0]}\n│\n│🎮 *Modalidad:*\n│👥 *Jugadores:*\n│\n│🏆 *Escuadra 1:*\n│   👑 • \n│   🥷🏻 • \n│   🥷🏻 • \n│   🥷🏻 • \n│\n│🧱 *Suplentes:*\n│   🥷🏻 • \n│   🥷🏻 • \n╰───────────────❍\n\n📢 *Canal Oficial:* https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l`,
     mentions: []
-}, { quoted: fkontak})
+  }, { quoted: fkontak })
 }
 
 handler.help = ['4vs4']
