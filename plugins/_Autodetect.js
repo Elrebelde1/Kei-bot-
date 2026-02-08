@@ -7,39 +7,39 @@ import path from 'path'
 
 let handler = m => m
 handler.before = async function (m, { conn, participants, groupMetadata}) {
-    if (!m.messageStubType ||!m.isGroup) return
+    if (!m.messageStubType || !m.isGroup) return
 
     const fkontak = {
         key: {
             participants: "0@s.whatsapp.net",
             remoteJid: "status@broadcast",
             fromMe: false,
-            id: "KingMenu"
-},
+            id: "KeistopMenu"
+        },
         message: {
             locationMessage: {
-                name: "𝙏𝙝𝙚 𝙆𝙞𝙣𝙜'𝙨 𝘽𝙤𝙩 👾",
-                jpegThumbnail: await (await fetch('https://files.catbox.moe/1j784p.jpg')).buffer(),
+                name: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
+                jpegThumbnail: await (await fetch('https://files.catbox.moe/hnlnna.jpg')).buffer(),
                 vcard:
                     "BEGIN:VCARD\n" +
                     "VERSION:3.0\n" +
-                    "N:;The King's Bot;;;\n" +
-                    "FN:The King's Bot\n" +
-                    "ORG: Benja Developers\n" +
+                    "N:;𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓;;;\n" +
+                    "FN:𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓\n" +
+                    "ORG: 𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐂𝐨𝐦𝐮𝐧𝐢𝐭𝐲\n" +
                     "TITLE:\n" +
-                    "item1.TEL;waid=19709001746:+1 (970) 900-1746\n" +
-                    "item1.X-ABLabel:King\n" +
-                    "X-WA-BIZ-DESCRIPTION:👑 El sistema definitivo.\n" +
-                    "X-WA-BIZ-NAME:The King's Bot\n" +
+                    "item1.TEL;waid=5491100000000:+54 9 11 0000-0000\n" +
+                    "item1.X-ABLabel:Keistop\n" +
+                    "X-WA-BIZ-DESCRIPTION:👾 Sistema de Gestión de Grupos.\n" +
+                    "X-WA-BIZ-NAME:𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓\n" +
                     "END:VCARD"
-}
-},
+            }
+        },
         participant: "0@s.whatsapp.net"
-}
+    }
 
     let chat = global.db.data.chats[m.chat]
     let usuario = `@${m.sender.split`@`[0]}`
-    let pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || 'https://files.catbox.moe/xr2m6u.jpg'
+    let pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || 'https://files.catbox.moe/hnlnna.jpg'
 
     let nombre = `✨ ${usuario} *ha cambiado el nombre del grupo* ✨\n\n> 📝 *Nuevo nombre:* _${m.messageStubParameters[0]}_`
     let foto = `📸 *¡Nueva foto de grupo!* 📸\n\n> 💫 Acción realizada por: ${usuario}`
@@ -51,25 +51,25 @@ handler.before = async function (m, { conn, participants, groupMetadata}) {
 
     if (chat.detect && m.messageStubType == 21) {
         await this.sendMessage(m.chat, { text: nombre, mentions: [m.sender]}, { quoted: fkontak})
-} else if (chat.detect && m.messageStubType == 22) {
+    } else if (chat.detect && m.messageStubType == 22) {
         await this.sendMessage(m.chat, { image: { url: pp}, caption: foto, mentions: [m.sender]}, { quoted: fkontak})
-} else if (chat.detect && m.messageStubType == 23) {
+    } else if (chat.detect && m.messageStubType == 23) {
         await this.sendMessage(m.chat, { text: newlink, mentions: [m.sender]}, { quoted: fkontak})
-} else if (chat.detect && m.messageStubType == 25) {
+    } else if (chat.detect && m.messageStubType == 25) {
         await this.sendMessage(m.chat, { text: edit, mentions: [m.sender]}, { quoted: fkontak})
-} else if (chat.detect && m.messageStubType == 26) {
+    } else if (chat.detect && m.messageStubType == 26) {
         await this.sendMessage(m.chat, { text: status, mentions: [m.sender]}, { quoted: fkontak})
-} else if (chat.detect && m.messageStubType == 29) {
+    } else if (chat.detect && m.messageStubType == 29) {
         await this.sendMessage(m.chat, { text: admingp, mentions: [`${m.sender}`,`${m.messageStubParameters[0]}`]}, { quoted: fkontak})
-} else if (chat.detect && m.messageStubType == 30) {
-await this.sendMessage(m.chat, { text: noadmingp, mentions: [`${m.sender}`,`${m.messageStubParameters[0]}`]}, { quoted: fkontak})
-} else {
+    } else if (chat.detect && m.messageStubType == 30) {
+        await this.sendMessage(m.chat, { text: noadmingp, mentions: [`${m.sender}`,`${m.messageStubParameters[0]}`]}, { quoted: fkontak})
+    } else {
         console.log({
             messageStubType: m.messageStubType,
             messageStubParameters: m.messageStubParameters,
             type: WAMessageStubType[m.messageStubType],
-})
-}
+        })
+    }
 }
 
 export default handler
