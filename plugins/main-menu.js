@@ -15,7 +15,7 @@ const saludar = () => {
   return '🌌 ¡Buena noche!';
 };
 
-const img = 'https://qu.ax/Ny958'; // Imagen principal
+const img = 'https://files.catbox.moe/hnlnna.jpg'; // Imagen actualizada
 const line = '━━━━━━━━━━━━━━━━━━━━';
 
 const handler = async (m, { conn, usedPrefix }) => {
@@ -31,7 +31,7 @@ const handler = async (m, { conn, usedPrefix }) => {
 ${saludar()} ${tag}
 
 ┏━━━━━━━━━━━━━━━━━━━━┓
-┃   𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾
+┃   𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 👾
 ┗━━━━━━━━━━━━━━━━━━━━┛
   
   ◈ **ESTADO DEL NÚCLEO** ◈
@@ -54,18 +54,19 @@ ${line}\n`;
 
     const categoryIcons = {
       anime: '🌸', info: '🛡️', search: '🔍', diversión: '🎮', sticker: '✨',
-      descargas: '📥', herramientas: '🔧', otros: '⚙️', config: '🛠️'
+      descargas: '📥', herramientas: '🔧', otros: '⚙️', config: '🛠️', general: '🌐'
     };
 
     for (const [title, cmds] of Object.entries(categorizedCommands)) {
       const icon = categoryIcons[title.toLowerCase()] || '◈';
-      menu += `\n ⚡ **${icon} ${title.toUpperCase()}**\n`;
+      // Aquí se cambió el rayo por el emoji de la categoría
+      menu += `\n ${icon} **${title.toUpperCase()}**\n`;
       cmds.forEach(cmd => {
         menu += `  ▫ ${cmd}\n`;
       });
     }
 
-    menu += `\n${line}\n  *© 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 - 2026*`;
+    menu += `\n${line}\n  *© 𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 - 2026*`;
 
     await conn.sendMessage(m.chat, {
       image: { url: img },
