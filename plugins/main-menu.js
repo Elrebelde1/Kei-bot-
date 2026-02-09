@@ -10,63 +10,73 @@ const clockString = ms => {
 
 const saludar = () => {
   const hora = new Date().getHours();
-  if (hora >= 5 && hora < 12) return '✨ ¡Buen día!';
-  if (hora >= 12 && hora < 19) return '☄️ ¡Buena tarde!';
-  return '🌌 ¡Buena noche!';
+  if (hora >= 5 && hora < 12) return '🌅 ¡Buenos días!';
+  if (hora >= 12 && hora < 19) return '☀️ ¡Buenas tardes!';
+  return '🌙 ¡Buenas noches!';
 };
 
-const img = 'https://files.catbox.moe/hnlnna.jpg'; // Imagen actualizada
-const line = '━━━━━━━━━━━━━━━━━━━━';
+const img = 'https://files.catbox.moe/hnlnna.jpg';
 
 const handler = async (m, { conn, usedPrefix }) => {
   try {
-    const user = global.db.data.users[m.sender] || { level: 1, exp: 0, limit: 10 };
+    const user = global.db.data.users[m.sender] || { level: 0, exp: 0, limit: 10 };
     const { exp, level, limit } = user;
     const { min, xp } = xpRange(level, global.multiplier || 1);
     const uptime = clockString(process.uptime() * 1000);
     const tag = `@${m.sender.split('@')[0]}`;
+    const totalUsers = Object.keys(global.db.data.users).length;
 
-    // Estructura del Menú
-    let menu = `
-${saludar()} ${tag}
-
-┏━━━━━━━━━━━━━━━━━━━━┓
-┃   𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 👾
-┗━━━━━━━━━━━━━━━━━━━━┛
-  
-  ⚡ *ESTADO DEL NÚCLEO* ⚡
-  ⚡ *Nivel:* ${level}
-  ⚡ *Progreso:* ${exp - min} / ${xp}
-  ⚡ *Diamantes* ${limit}
-  ⚡ *Uptime:* ${uptime}
-  
-${line}\n`;
+    // Encabezado con Estilo de Caja
+    let menu = `${saludar()} ${tag} ✨\n\n`;
+    menu += `╭╾━━━━╼ 〔 ⚡ 〕 ╾━━━━╼╮\n`;
+    menu += `┃  ⚡ *𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 𝐌𝐄𝐍𝐔*\n`;
+    menu += `┃  👤 *Usuario:* ${tag}\n`;
+    menu += `┃  📈 *Nivel:* ${level}\n`;
+    menu += `┃  ✨ *Exp:* ${exp - min}/${xp}\n`;
+    menu += `┃  💎 *Diamantes:* ${limit}\n`;
+    menu += `┃  ⏳ *Activo:* ${uptime}\n`;
+    menu += `┃  👥 *Usuarios:* ${totalUsers}\n`;
+    menu += `╰╾━━━━╼ 〔 🚀 〕 ╾━━━━╼╯\n`;
 
     let categorizedCommands = {};
     Object.values(global.plugins)
       .filter(p => p?.help && !p.disabled)
       .forEach(p => {
-        const tag = Array.isArray(p.tags) ? p.tags[0] : p.tags || 'General';
+        const tag = Array.isArray(p.tags) ? p.tags[0] : p.tags || 'Otros';
         const cmds = Array.isArray(p.help) ? p.help : [p.help];
         categorizedCommands[tag] = categorizedCommands[tag] || new Set();
-        cmds.forEach(cmd => categorizedCommands[tag].add(usedPrefix + cmd));
+        cmds.forEach(cmd => categorizedCommands[tag].add(cmd));
       });
 
     const categoryIcons = {
-      anime: '🌸', info: '🛡️', search: '🔍', diversión: '🎮', sticker: '✨',
-      descargas: '📥', herramientas: '🔧', otros: '⚙️', config: '🛠️', general: '🌐'
+      internet: '🔹', musica: '🔹', downloader: '🔹', owner: '💻',
+      admin: '🔹', otros: '🧩', econ: '🔹', tools: '🔹', audio: '🔹',
+      descargas: '📥', search: '🔭', info: 'ℹ️', buscador: '🔹',
+      búsquedas: '🔹', dl: '🔹', anime: '🏮', random: '🔹',
+      freefire: '🔫', descarga: '🔹', nable: '🔹', fun: '🔹',
+      diversión: '🎮', consultor: '🔹', sticker: '🎭', maker: '🔹',
+      game: '🔹', arte: '🔹', cocina: '🔹', gacha: '🔹', ia: '🔹',
+      group: '👥', grupo: '🔹', ai: '🔹', staff: '🔹', main: '🔹',
+      transformador: '🔹', nsfw: '🔞', fix: '🔹', rg: '🔹', rpg: '🛡️',
+      economía: '🔹', mascot: '🔹', herramientas: '🛠️'
     };
 
+    // Cuerpo del Menú
     for (const [title, cmds] of Object.entries(categorizedCommands)) {
-      const icon = categoryIcons[title.toLowerCase()] || '⚡';
-      // Aquí se cambió el rayo por el emoji de la categoría
-      menu += `\n ${icon} **${title.toUpperCase()}**\n`;
+      const icon = categoryIcons[title.toLowerCase()] || '🔹';
+      menu += `\n╭╾━━╼ 〔 ${icon} *${title.toUpperCase()}* 〕\n`;
       cmds.forEach(cmd => {
-        menu += `  ▫ ${cmd}\n`;
+        menu += `┃  ⚡ ${usedPrefix}${cmd}\n`;
       });
+      menu += `╰╾━━╼ 〔 ⚡ 〕\n`;
     }
 
-    menu += `\n${line}\n  *© 𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 - 2026*`;
+    // Pie de página
+    menu += `\n╭╾━━━━╼ 〔 ⚡ 〕 ╾━━━━╼╮\n`;
+    menu += `┃  ✨ *𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 𝐒𝐘𝐒𝐓𝐄𝐌*\n`;
+    menu += `┃  🛠️ *By Keistop Developers*\n`;
+    menu += `┃  ⚡ *Power & Speed*\n`;
+    menu += `╰╾━━━━╼ 〔 🚀 〕 ╾━━━━╼╯`;
 
     await conn.sendMessage(m.chat, {
       image: { url: img },
@@ -76,7 +86,7 @@ ${line}\n`;
 
   } catch (e) {
     console.error(e);
-    await conn.reply(m.chat, '❌ Error al generar la interfaz.', m);
+    await conn.reply(m.chat, '❌ Error al generar el menú.', m);
   }
 };
 
