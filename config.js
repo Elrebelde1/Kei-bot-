@@ -11,6 +11,8 @@ import axios from 'axios'
   global.owner = [
   [ '573204116340', 'creador', true ],
   [ '5804226480049', 'ayudante', true ],
+  [ '573103274867', 'owne', true ],
+
   ]
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
