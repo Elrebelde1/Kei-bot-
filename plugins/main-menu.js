@@ -34,11 +34,11 @@ ${saludar()} ${tag}
 ┃   𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 👾
 ┗━━━━━━━━━━━━━━━━━━━━┛
   
-  ◈ **ESTADO DEL NÚCLEO** ◈
-  ⟐ **Nivel:** ${level}
-  ⟐ **Progreso:** ${exp - min} / ${xp}
-  ⟐ **Diamantes:** ${limit}
-  ⟐ **Uptime:** ${uptime}
+  ⚡ *ESTADO DEL NÚCLEO* ⚡
+  ⚡ *Nivel:* ${level}
+  ⚡ *Progreso:* ${exp - min} / ${xp}
+  ⚡ *Diamantes* ${limit}
+  ⚡ *Uptime:* ${uptime}
   
 ${line}\n`;
 
@@ -58,7 +58,7 @@ ${line}\n`;
     };
 
     for (const [title, cmds] of Object.entries(categorizedCommands)) {
-      const icon = categoryIcons[title.toLowerCase()] || '◈';
+      const icon = categoryIcons[title.toLowerCase()] || '⚡';
       // Aquí se cambió el rayo por el emoji de la categoría
       menu += `\n ${icon} **${title.toUpperCase()}**\n`;
       cmds.forEach(cmd => {
