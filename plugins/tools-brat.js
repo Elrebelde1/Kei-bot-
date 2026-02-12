@@ -1,46 +1,30 @@
 import { sticker } from '../lib/sticker.js';
 import axios from 'axios';
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-const fetchSticker = async (text, attempt = 1) => {
-    try {
-        const response = await axios.get(`https://kepolu-brat.hf.space/brat`, {
-            params: { q: text },
-            responseType: 'arraybuffer',
-        });
-        return response.data;
-    } catch (error) {
-        if (error.response?.status === 429 && attempt <= 3) {
-            const retryAfter = error.response.headers['retry-after'] || 5;
-            await delay(retryAfter * 1000);
-            return fetchSticker(text, attempt + 1);
-        }
-        throw error;
-    }
-};
-
 let handler = async (m, { conn, text }) => {
-    if (!text) {
-        return conn.sendMessage(m.chat, {
-            text: `${emoji} Por favor ingresa el texto para hacer un sticker.`,
-        }, { quoted: m });
-    }
+    if (!text) return conn.sendMessage(m.chat, { text: `⚠️ Escribe el texto que quieres convertir en sticker.` }, { quoted: m });
 
     try {
-        const buffer = await fetchSticker(text);
-        let stiker = await sticker(buffer, false, global.botname, global.nombre);
+        // Mostramos que el bot está trabajando
+        await m.react('⚪');
+
+        // URL directa con fondo blanco por defecto
+        const apiUrl = `https://sylphy.xyz/tools/brat?text=${encodeURIComponent(text)}&color=black&fondo=white&api_key=sylphy-6f150d`;
+
+        const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
+        const buffer = response.data;
+
+        // Conversión a sticker
+        let stiker = await sticker(buffer, false, global.packname || 'Brat', global.author || 'Bot');
 
         if (stiker) {
             return conn.sendFile(m.chat, stiker, 'sticker.webp', '', m);
         } else {
-            throw new Error("No se pudo generar el sticker.");
+            throw new Error("Error al convertir a sticker.");
         }
     } catch (error) {
         console.error(error);
-        return conn.sendMessage(m.chat, {
-            text: `${msm} Ocurrió un error: ${error.message}`,
-        }, { quoted: m });
+        return conn.sendMessage(m.chat, { text: `❌ No se pudo generar el sticker.` }, { quoted: m });
     }
 };
 
