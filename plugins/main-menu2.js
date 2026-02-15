@@ -1,6 +1,6 @@
 const handler = async (m, { conn }) => {
   // Imagen actualizada solicitada
-  const img = 'https://files.catbox.moe/hnlnna.jpg' 
+  const img = 'https://files.catbox.moe/gjvmer.jpg' 
 
   const texto = `
 *╭━━〔 🎵 CAJA MUSICAL 🎵 〕━━╮*
