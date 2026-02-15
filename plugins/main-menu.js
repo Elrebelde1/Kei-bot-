@@ -15,7 +15,7 @@ const saludar = () => {
   return '🌙 ¡Buenas noches!';
 };
 
-const img = 'https://files.catbox.moe/hnlnna.jpg';
+const img = 'https://files.catbox.moe/gjvmer.jpg';
 
 const handler = async (m, { conn, usedPrefix }) => {
   try {
