@@ -42,7 +42,7 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args }) 
     messageText += `║ ${emoji} ${getCountryFlag(mem.id)} @${mem.id.split('@')[0]}\n`;
   }
 
-  messageText += `║\n╚══✦ 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 ⚡ ✦══╝`;
+  messageText += `║\n╚══✦ 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾✦══╝`;
 
   const imageUrl = 'https://files.catbox.moe/hnlnna.jpg';
 
