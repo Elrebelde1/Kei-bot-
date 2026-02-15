@@ -10,7 +10,7 @@ const handler = async (m, { isPrems, conn }) => {
   }
 
   // Imagen actualizada solicitada
-  const img = 'https://files.catbox.moe/hnlnna.jpg' 
+  const img = 'https://files.catbox.moe/gjvmer.jpg' 
   
   const texto = `
 🎨💎 *𝕄𝔼ℕ𝕌́ 𝔻𝔼 𝔻𝕀𝕊𝔼ℕ̃𝕆𝕊 - 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'* 💎🎨
