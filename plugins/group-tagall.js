@@ -7,7 +7,7 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args }) 
   }
 
   const chat = global.db.data.chats[m.chat] || {};
-  const emoji = chat.emojiTag || '👾';
+  const emoji = chat.emojiTag || '⚡';
   const customMessage = args.join(' ');
   const groupMetadata = await conn.groupMetadata(m.chat);
   const groupName = groupMetadata.subject;
