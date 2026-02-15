@@ -9,7 +9,7 @@ const handler = async (m, { conn, participants }) => {
     const platformName = isBusiness ? 'WhatsApp Business' : 'WhatsApp'
 
     // Imagen oficial del bot
-    const catalogoImg = { url: 'https://files.catbox.moe/hnlnna.jpg' }
+    const catalogoImg = { url: 'https://files.catbox.moe/gjvmer.jpg' }
 
     const userText = m.text ? m.text.slice(m.text.split(' ')[0].length).trim() : ''
 
