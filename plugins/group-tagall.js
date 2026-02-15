@@ -44,7 +44,7 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args }) 
 
   messageText += `║\n╚══✦ 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾✦══╝`;
 
-  const imageUrl = 'https://files.catbox.moe/hnlnna.jpg';
+  const imageUrl = 'https://files.catbox.moe/gjvmer.jpg';
 
   // Miniatura para el mensaje (fkontak)
   const thumb = await (await fetch(imageUrl)).buffer();
