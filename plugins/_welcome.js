@@ -9,7 +9,7 @@ export async function before(m, { conn, groupMetadata }) {
     if (!chat || !chat.bienvenida) return true;
 
     // --- ✅ Nueva imagen actualizada ---
-    const defaultImageUrl = 'https://files.catbox.moe/hnlnna.jpg'; 
+    const defaultImageUrl = 'https://files.catbox.moe/gjvmer.jpg'; 
 
     const get_default_image_buffer = async () => {
         return await fetch(defaultImageUrl).then(res => res.buffer());
