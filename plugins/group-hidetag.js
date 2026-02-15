@@ -5,8 +5,10 @@ import { join } from 'path'
 const handler = async (m, { conn, participants }) => {
   try {
     const users = participants.map(u => conn.decodeJid(u.id))
-    const isBusiness = conn.user.isBusiness || false
-    const platformName = isBusiness ? 'WhatsApp Business' : 'WhatsApp'
+    
+    // Detecta si la cuenta es Business o normal
+    const isBusiness = conn.user?.isBusiness || false
+    const platformName = isBusiness ? 'WhatsApp Business ✅' : 'WhatsApp ✅'
 
     // Imagen oficial del bot
     const catalogoImg = { url: 'https://files.catbox.moe/gjvmer.jpg' }
@@ -15,10 +17,10 @@ const handler = async (m, { conn, participants }) => {
 
     const keistopContext = {
       externalAdReply: {
-        title: `𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾`, 
-        body: `Canal Oficial de KeistopBot`,
+        title: `𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐁𝐎𝐓 👾`, 
+        body: platformName, // Aquí muestra WhatsApp o Business con verificado
         thumbnailUrl: catalogoImg.url,
-        sourceUrl: 'https://whatsapp.com/channel/0029Vb7aYAQJkK7F00EIzB1l', // Enlace actualizado
+        sourceUrl: 'https://www.whatsapp.com', 
         mediaType: 1,
         renderLargerThumbnail: false,
         showAdAttribution: true
