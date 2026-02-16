@@ -1,8 +1,12 @@
-const handler = async (m, { conn }) => {
-  // Imagen actualizada solicitada
-  const img = 'https://files.catbox.moe/gjvmer.jpg' 
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-  const texto = `
+const handler = async (m, { conn }) => {
+  try {
+    // Leemos la imagen localmente desde la ruta especificada
+    const img = readFileSync(join(process.cwd(), 'storage', 'img', 'catalogo.png'));
+
+    const texto = `
 *╭━━〔 🎵 CAJA MUSICAL 🎵 〕━━╮*
 *┃*
 *┃* ¡𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾!
@@ -38,16 +42,22 @@ const handler = async (m, { conn }) => {
 *┃* _Escribe el nombre exacto_
 *┃* _del audio para reproducirlo._
 *┃*
-*╰━━━━━━━━━━━━━━━━━━╯*`.trim()
+*╰━━━━━━━━━━━━━━━━━━╯*`.trim();
 
-  await conn.sendMessage(m.chat, { 
-    image: { url: img }, 
-    caption: texto 
-  }, { quoted: m })
-}
+    await conn.sendMessage(m.chat, { 
+      image: img, // Enviamos el Buffer directamente
+      caption: texto 
+    }, { quoted: m });
 
-handler.help = ['menu2', 'menuaudios']
-handler.tags = ['main']
-handler.command = ['menu2', 'menuaudios', 'audios']
+  } catch (e) {
+    console.error(e);
+    // Mensaje de error por si la imagen no existe en la carpeta
+    await conn.reply(m.chat, '❌ No se pudo cargar la imagen del menú de audios.', m);
+  }
+};
 
-export default handler
+handler.help = ['menu2', 'menuaudios'];
+handler.tags = ['main'];
+handler.command = ['menu2', 'menuaudios', 'audios'];
+
+export default handler;
