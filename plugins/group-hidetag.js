@@ -10,11 +10,11 @@ const handler = async (m, { conn, participants }) => {
     const isBusiness = conn.user?.isBusiness || false
     const platformName = isBusiness ? 'WhatsApp Business ✅' : 'WhatsApp ✅'
 
-    // --- ✅ Imagen local configurada como Buffer ---
+    // --- ✅ Imagen local configurada ---
     const localImgPath = join(process.cwd(), 'storage', 'img', 'catalogo.png')
     const catalogoImg = existsSync(localImgPath) 
       ? readFileSync(localImgPath) 
-      : { url: 'https://files.catbox.moe/gjvmer.jpg' } // Backup por si borras el archivo
+      : { url: 'https://files.catbox.moe/gjvmer.jpg' }
 
     const userText = m.text ? m.text.slice(m.text.split(' ')[0].length).trim() : ''
 
@@ -22,10 +22,10 @@ const handler = async (m, { conn, participants }) => {
       externalAdReply: {
         title: `𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐁𝐎𝐓 👾`, 
         body: platformName, 
-        thumbnail: catalogoImg, // Usa el Buffer local
+        thumbnail: catalogoImg, 
         sourceUrl: 'https://www.whatsapp.com', 
         mediaType: 1,
-        renderLargerThumbnail: false,
+        renderLargerThumbnail: true, // <--- ESTO PONE LA IMAGEN EN GRANDE
         showAdAttribution: true
       }
     }
@@ -58,7 +58,7 @@ const handler = async (m, { conn, participants }) => {
         await conn.sendMessage(m.chat, { text: finalText, ...messageOptions })
       }
     } else {
-      // Si no hay nada citado, envía el texto con la imagen del catálogo local
+      // Si no citas nada, envía el texto con la imagen en el cuerpo del mensaje
       await conn.sendMessage(m.chat, {
         image: catalogoImg,
         caption: userText || '¡Atención a todos los miembros! 👾',
