@@ -1,4 +1,5 @@
-import fetch from "node-fetch";
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const handler = async (m, { isOwner, isAdmin, conn, text, participants, args }) => {
   if (!(isAdmin || isOwner)) {
@@ -6,69 +7,74 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args }) 
     return;
   }
 
-  const chat = global.db.data.chats[m.chat] || {};
-  const emoji = chat.emojiTag || '⚡';
-  const customMessage = args.join(' ');
-  const groupMetadata = await conn.groupMetadata(m.chat);
-  const groupName = groupMetadata.subject;
+  try {
+    const chat = global.db.data.chats[m.chat] || {};
+    const emoji = chat.emojiTag || '⚡';
+    const customMessage = args.join(' ');
+    const groupMetadata = await conn.groupMetadata(m.chat);
+    const groupName = groupMetadata.subject;
 
-  const countryFlags = {
-    '1': '🇺🇸', '44': '🇬🇧', '33': '🇫🇷', '49': '🇩🇪', '34': '🇪🇸', '55': '🇧🇷', 
-    '52': '🇲🇽', '54': '🇦🇷', '57': '🇨🇴', '51': '🇵🇪', '56': '🇨🇱', '58': '🇻🇪', 
-    '502': '🇬🇹', '503': '🇸🇻', '504': '🇭🇳', '505': '🇳🇮', '506': '🇨🇷', '507': '🇵🇦', 
-    '591': '🇧🇴', '593': '🇪🇨', '595': '🇵🇾', '598': '🇺🇾', '53': '🇨🇺'
-  };
+    // Ruta de la imagen local
+    const localImg = readFileSync(join(process.cwd(), 'storage', 'img', 'catalogo.png'));
 
-  const getCountryFlag = (id) => {
-    const num = id.split('@')[0];
-    if (num.startsWith('1')) return '🇺🇸';
-    const p2 = num.substring(0, 2);
-    const p3 = num.substring(0, 3);
-    return countryFlags[p3] || countryFlags[p2] || '👤';
-  };
+    const countryFlags = {
+      '1': '🇺🇸', '44': '🇬🇧', '33': '🇫🇷', '49': '🇩🇪', '34': '🇪🇸', '55': '🇧🇷', 
+      '52': '🇲🇽', '54': '🇦🇷', '57': '🇨🇴', '51': '🇵🇪', '56': '🇨🇱', '58': '🇻🇪', 
+      '502': '🇬🇹', '503': '🇸🇻', '504': '🇭🇳', '505': '🇳🇮', '506': '🇨🇷', '507': '🇵🇦', 
+      '591': '🇧🇴', '593': '🇪🇨', '595': '🇵🇾', '598': '🇺🇾', '53': '🇨🇺'
+    };
 
-  // --- DISEÑO RENOVADO 𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐁𝐎𝐓 ---
-  let messageText = `╔══✦ *CONVOCATORIA GENERAL* ✦══╗\n║\n`;
-  messageText += `║ 🛡️ *Grupo:* ${groupName}\n`;
-  messageText += `║ 👥 *Miembros:* ${participants.length}\n`;
+    const getCountryFlag = (id) => {
+      const num = id.split('@')[0];
+      if (num.startsWith('1')) return '🇺🇸';
+      const p2 = num.substring(0, 2);
+      const p3 = num.substring(0, 3);
+      return countryFlags[p3] || countryFlags[p2] || '👤';
+    };
 
-  if (customMessage) {
-    messageText += `║ 📢 *Mensaje:* ${customMessage}\n`;
-  }
+    // --- DISEÑO RENOVADO 𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐁𝐎𝐓 ---
+    let messageText = `╔══✦ *CONVOCATORIA GENERAL* ✦══╗\n║\n`;
+    messageText += `║ 🛡️ *Grupo:* ${groupName}\n`;
+    messageText += `║ 👥 *Miembros:* ${participants.length}\n`;
 
-  messageText += `║\n╠══✦ *NOTIFICANDO USUARIOS* ✦══\n║\n`;
-
-  for (const mem of participants) {
-    messageText += `║ ${emoji} ${getCountryFlag(mem.id)} @${mem.id.split('@')[0]}\n`;
-  }
-
-  messageText += `║\n╚══✦ 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾✦══╝`;
-
-  const imageUrl = 'https://files.catbox.moe/gjvmer.jpg';
-
-  // Miniatura para el mensaje (fkontak)
-  const thumb = await (await fetch(imageUrl)).buffer();
-
-  const fkontak = {
-    key: { 
-      participants: "0@s.whatsapp.net", 
-      remoteJid: "status@broadcast", 
-      fromMe: false, 
-      id: "KeistopTagall" 
-    },
-    message: {
-      locationMessage: {
-        name: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
-        jpegThumbnail: thumb
-      }
+    if (customMessage) {
+      messageText += `║ 📢 *Mensaje:* ${customMessage}\n`;
     }
-  };
 
-  await conn.sendMessage(m.chat, {
-    image: { url: imageUrl },
-    caption: messageText,
-    mentions: participants.map(a => a.id)
-  }, { quoted: fkontak });
+    messageText += `║\n╠══✦ *NOTIFICANDO USUARIOS* ✦══\n║\n`;
+
+    for (const mem of participants) {
+      messageText += `║ ${emoji} ${getCountryFlag(mem.id)} @${mem.id.split('@')[0]}\n`;
+    }
+
+    messageText += `║\n╚══✦ 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾✦══╝`;
+
+    // Miniatura para el mensaje (usando el buffer local)
+    const fkontak = {
+      key: { 
+        participants: "0@s.whatsapp.net", 
+        remoteJid: "status@broadcast", 
+        fromMe: false, 
+        id: "KeistopTagall" 
+      },
+      message: {
+        locationMessage: {
+          name: "𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓 👾",
+          jpegThumbnail: localImg
+        }
+      }
+    };
+
+    await conn.sendMessage(m.chat, {
+      image: localImg, // Imagen local
+      caption: messageText,
+      mentions: participants.map(a => a.id)
+    }, { quoted: fkontak });
+
+  } catch (e) {
+    console.error(e);
+    await conn.reply(m.chat, '❌ Error al ejecutar la convocatoria. Verifica la imagen local.', m);
+  }
 };
 
 handler.help = ['todos'];
