@@ -1,18 +1,22 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 const handler = async (m, { isPrems, conn }) => {
-  // Registro de tiempo
-  const last = global.db.data.users[m.sender].lastcofre || 0
-  const now = new Date() * 1
-  const cooldown = 0 
+  try {
+    // Registro de tiempo
+    const last = global.db.data.users[m.sender].lastcofre || 0
+    const now = new Date() * 1
+    const cooldown = 0 // Puedes cambiar esto por milisegundos si quieres delay
 
-  if (now - last < cooldown) {
-    const wait = msToTime((last + cooldown) - now)
-    throw `⏳ El sistema está procesando otros pedidos. Vuelve en *${wait}*.`
-  }
+    if (now - last < cooldown) {
+      const wait = msToTime((last + cooldown) - now)
+      throw `⏳ El sistema está procesando otros pedidos. Vuelve en *${wait}*.`
+    }
 
-  // Imagen actualizada solicitada
-  const img = 'https://files.catbox.moe/gjvmer.jpg' 
-  
-  const texto = `
+    // Definir la ruta de la imagen local y leerla como Buffer
+    const img = readFileSync(join(process.cwd(), 'storage', 'img', 'catalogo.png'));
+
+    const texto = `
 🎨💎 *𝕄𝔼ℕ𝕌́ 𝔻𝔼 𝔻𝕀𝕊𝔼ℕ̃𝕆𝕊 - 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'* 💎🎨
 ––––––––––––––––––––––––––––––––––––––
 
@@ -56,13 +60,22 @@ _Uso: .comando (texto)_
 
 ––––––––––––––––––––––––––––––––––––––
 _🚀 ¡Genera tu identidad con 𝐊𝐄𝐈𝐒𝐓𝐎𝐏'  𝐁𝐎𝐓!_
-`
+`.trim()
 
-  // Enviar imagen + caption
-  await conn.sendMessage(m.chat, { image: { url: img }, caption: texto }, { quoted: m })
+    // Enviar imagen local + caption
+    await conn.sendMessage(m.chat, { 
+      image: img, 
+      caption: texto 
+    }, { quoted: m })
 
-  // Actualizar última vez
-  global.db.data.users[m.sender].lastcofre = now
+    // Actualizar última vez en la DB
+    global.db.data.users[m.sender].lastcofre = now
+
+  } catch (e) {
+    console.error(e)
+    if (typeof e === 'string') throw e // Re-lanzar el mensaje del cooldown
+    await conn.reply(m.chat, '❌ Hubo un fallo al cargar el menú de logos.', m)
+  }
 }
 
 handler.help = ['menu3']
