@@ -1,4 +1,4 @@
-import { generateWAMessageFromContent } from '@whiskeysockets/baileys'
+Import { generateWAMessageFromContent } from '@whiskeysockets/baileys'
 import { readFileSync, existsSync } from 'fs'
 import { join } from 'path'
 
@@ -10,22 +10,19 @@ const handler = async (m, { conn, participants }) => {
     const isBusiness = conn.user?.isBusiness || false
     const platformName = isBusiness ? 'WhatsApp Business ✅' : 'WhatsApp ✅'
 
-    // --- ✅ Imagen local configurada ---
-    const localImgPath = join(process.cwd(), 'storage', 'img', 'catalogo.png')
-    const catalogoImg = existsSync(localImgPath) 
-      ? readFileSync(localImgPath) 
-      : { url: 'https://files.catbox.moe/gjvmer.jpg' }
+    // Imagen oficial del bot
+    const catalogoImg = { url: 'https://files.catbox.moe/gjvmer.jpg' }
 
     const userText = m.text ? m.text.slice(m.text.split(' ')[0].length).trim() : ''
 
     const keistopContext = {
       externalAdReply: {
         title: `𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐁𝐎𝐓 👾`, 
-        body: platformName, 
-        thumbnail: catalogoImg, 
+        body: platformName, // Aquí muestra WhatsApp o Business con verificado
+        thumbnailUrl: catalogoImg.url,
         sourceUrl: 'https://www.whatsapp.com', 
         mediaType: 1,
-        renderLargerThumbnail: true, // <--- ESTO PONE LA IMAGEN EN GRANDE
+        renderLargerThumbnail: false,
         showAdAttribution: true
       }
     }
@@ -58,10 +55,8 @@ const handler = async (m, { conn, participants }) => {
         await conn.sendMessage(m.chat, { text: finalText, ...messageOptions })
       }
     } else {
-      // Si no citas nada, envía el texto con la imagen en el cuerpo del mensaje
       await conn.sendMessage(m.chat, {
-        image: catalogoImg,
-        caption: userText || '¡Atención a todos los miembros! 👾',
+        text: userText || '¡Atención a todos los miembros! 👾',
         ...messageOptions
       })
     }
