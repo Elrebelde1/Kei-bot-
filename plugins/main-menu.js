@@ -1,5 +1,7 @@
 import { xpRange } from '../lib/levelling.js';
 import axios from 'axios';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const clockString = ms => {
   const h = Math.floor(ms / 3600000);
@@ -15,10 +17,11 @@ const saludar = () => {
   return '🌙 ¡Buenas noches!';
 };
 
-const img = 'https://files.catbox.moe/gjvmer.jpg';
-
 const handler = async (m, { conn, usedPrefix }) => {
   try {
+    // Definir la ruta de la imagen local y leerla como Buffer
+    const img = readFileSync(join(process.cwd(), 'storage', 'img', 'catalogo.png'));
+
     const user = global.db.data.users[m.sender] || { level: 0, exp: 0, limit: 10 };
     const { exp, level, limit } = user;
     const { min, xp } = xpRange(level, global.multiplier || 1);
@@ -61,7 +64,6 @@ const handler = async (m, { conn, usedPrefix }) => {
       economía: '🔹', mascot: '🔹', herramientas: '🛠️'
     };
 
-    // Cuerpo del Menú
     for (const [title, cmds] of Object.entries(categorizedCommands)) {
       const icon = categoryIcons[title.toLowerCase()] || '🔹';
       menu += `\n╭╾━━╼ 〔 ${icon} *${title.toUpperCase()}* 〕\n`;
@@ -71,22 +73,22 @@ const handler = async (m, { conn, usedPrefix }) => {
       menu += `╰╾━━╼ 〔 ⚡ 〕\n`;
     }
 
-    // Pie de página
     menu += `\n╭╾━━━━╼ 〔 ⚡ 〕 ╾━━━━╼╮\n`;
     menu += `┃  ✨ *𝐊𝐄𝐈𝐒𝐓𝐎𝐏  𝐁𝐎𝐓 𝐒𝐘𝐒𝐓𝐄𝐌*\n`;
     menu += `┃  🛠️ *By Keistop Developers*\n`;
     menu += `┃  ⚡ *Power & Speed*\n`;
     menu += `╰╾━━━━╼ 〔 🚀 〕 ╾━━━━╼╯`;
 
+    // Enviar mensaje con el Buffer de la imagen
     await conn.sendMessage(m.chat, {
-      image: { url: img },
+      image: img, // Ahora enviamos el Buffer directamente
       caption: menu.trim(),
       mentions: [m.sender]
     }, { quoted: m });
 
   } catch (e) {
     console.error(e);
-    await conn.reply(m.chat, '❌ Error al generar el menú.', m);
+    await conn.reply(m.chat, '❌ Error al generar el menú. Verifica que la imagen exista en storage/img/catalogo.png', m);
   }
 };
 
