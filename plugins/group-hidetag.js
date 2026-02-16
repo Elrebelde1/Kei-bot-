@@ -5,21 +5,24 @@ import { join } from 'path'
 const handler = async (m, { conn, participants }) => {
   try {
     const users = participants.map(u => conn.decodeJid(u.id))
-    
+
     // Detecta si la cuenta es Business o normal
     const isBusiness = conn.user?.isBusiness || false
     const platformName = isBusiness ? 'WhatsApp Business ✅' : 'WhatsApp ✅'
 
-    // Imagen oficial del bot
-    const catalogoImg = { url: 'https://files.catbox.moe/gjvmer.jpg' }
+    // --- ✅ Imagen local configurada como Buffer ---
+    const localImgPath = join(process.cwd(), 'storage', 'img', 'catalogo.png')
+    const catalogoImg = existsSync(localImgPath) 
+      ? readFileSync(localImgPath) 
+      : { url: 'https://files.catbox.moe/gjvmer.jpg' } // Backup por si borras el archivo
 
     const userText = m.text ? m.text.slice(m.text.split(' ')[0].length).trim() : ''
 
     const keistopContext = {
       externalAdReply: {
         title: `𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐁𝐎𝐓 👾`, 
-        body: platformName, // Aquí muestra WhatsApp o Business con verificado
-        thumbnailUrl: catalogoImg.url,
+        body: platformName, 
+        thumbnail: catalogoImg, // Usa el Buffer local
         sourceUrl: 'https://www.whatsapp.com', 
         mediaType: 1,
         renderLargerThumbnail: false,
@@ -55,8 +58,10 @@ const handler = async (m, { conn, participants }) => {
         await conn.sendMessage(m.chat, { text: finalText, ...messageOptions })
       }
     } else {
+      // Si no hay nada citado, envía el texto con la imagen del catálogo local
       await conn.sendMessage(m.chat, {
-        text: userText || '¡Atención a todos los miembros! 👾',
+        image: catalogoImg,
+        caption: userText || '¡Atención a todos los miembros! 👾',
         ...messageOptions
       })
     }
