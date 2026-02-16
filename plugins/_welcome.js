@@ -1,5 +1,6 @@
 import { WAMessageStubType } from '@whiskeysockets/baileys';
-import fetch from 'node-fetch';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 export async function before(m, { conn, groupMetadata }) {
   try {
@@ -8,13 +9,8 @@ export async function before(m, { conn, groupMetadata }) {
     const chat = global.db?.data?.chats?.[m.chat];
     if (!chat || !chat.bienvenida) return true;
 
-    // --- ✅ Nueva imagen actualizada ---
-    const defaultImageUrl = 'https://files.catbox.moe/gjvmer.jpg'; 
-
-    const get_default_image_buffer = async () => {
-        return await fetch(defaultImageUrl).then(res => res.buffer());
-    };
-    // ----------------------------------------
+    // --- ✅ Imagen local configurada ---
+    const imgBuffer = readFileSync(join(process.cwd(), 'storage', 'img', 'catalogo.png'));
 
     const fkontak = {
       key: {
@@ -52,7 +48,6 @@ export async function before(m, { conn, groupMetadata }) {
     const groupName = groupMetadata.subject;
     const groupDesc = groupMetadata.desc || 'Sin descripción disponible.';
 
-    const imgBuffer = await get_default_image_buffer();
     const { customWelcome, customBye, customKick } = chat;
 
     // --- 🟢 BIENVENIDA ---
