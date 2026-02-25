@@ -16,7 +16,7 @@ let handler = async (m, { conn, text, participants, isAdmin }) => {
         isForwarded: true,
         forwardingScore: 999,
         externalAdReply: {
-          title: 'Keisitop ✅',
+          title: '𝐊𝐄𝐈𝐒𝐓𝐎𝐏 ✅',
           body: 'Notificación Oficial del Grupo',
           thumbnailUrl: 'https://files.catbox.moe/gjvmer.jpg',
           sourceUrl: 'https://www.whatsapp.com/',
@@ -29,7 +29,7 @@ let handler = async (m, { conn, text, participants, isAdmin }) => {
     quoted: {
       key: { remoteJid: 'status@broadcast', participant: '0@s.whatsapp.net' },
       message: { 
-        conversation: "Hola Soy Keistop bot" 
+        conversation: "Hola Soy 𝐊𝐄𝐈𝐒𝐓𝐎𝐏' 𝐁𝐎𝐓" 
       }
     },
     userJid: conn.user.id 
