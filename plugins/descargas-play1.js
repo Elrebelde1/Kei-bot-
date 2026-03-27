@@ -3,20 +3,18 @@ import yts from 'yt-search'
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
     try {
-        if (!text.trim()) return conn.reply(m.chat, `✨ *¡Ups! Ingresa el nombre o link de YouTube.* \n\n> *Ejemplo:* ${usedPrefix + command} Pharrell Williams - Happy`, m)
-        
+        if (!text.trim()) return conn.reply(m.chat, `✨ *¡Ups! Ingresa el nombre o link de YouTube.* \n\n> *Ejemplo:* ${usedPrefix + command} Yan Block - 444`, m)
+
         await m.react('🔍')
 
-        const videoMatch = text.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/|v\/))([a-zA-Z0-9_-]{11})/)
-        const query = videoMatch ? 'https://youtu.be/' + videoMatch[1] : text
-        const search = await yts(query)
-        const result = videoMatch ? search.videos.find(v => v.videoId === videoMatch[1]) || search.all[0] : search.all[0]
-
+        // Busqueda en YouTube
+        const search = await yts(text)
+        const result = search.all[0]
         if (!result) throw '❌ No se encontraron resultados para tu búsqueda.'
 
         const { title, thumbnail, timestamp, views, url, author } = result
-        
-        // --- DISEÑO DE MENSAJE ---
+
+        // --- INFO DEL VIDEO ---
         const info = `╔══🎬 *YOUTUBE DOWNLOADER* 🎬══╗\n` +
                      `║ \n` +
                      `║ 📌 *Título:* ${title}\n` +
@@ -26,34 +24,50 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
                      `║ 🔗 *Link:* ${url}\n` +
                      `║ \n` +
                      `╚═════════════════════╝\n\n` +
-                     `> 🚀 *Enviando archivo, por favor espera...*`
+                     `> 🚀 *Enviando archivo de Delirius API...*`
 
-        const thumb = (await conn.getFile(thumbnail)).data
-        await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
+        await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: info }, { quoted: m })
 
-        const isAudio = ['play', 'yta', 'ytmp3', 'playaudio'].includes(command)
-        const endpoint = isAudio ? 'ytaudio' : 'ytvideo'
+        // Determinar si es audio o video
+        const isAudio = /^(play|yta|ytmp3|playaudio)$/i.test(command)
+        
+        // Configuración de la URL de la API de Delirius
+        // ytmp3 para audio, ytmp4 para video
+        const type = isAudio ? 'ytmp3' : 'ytmp4'
+        const apiUrl = `https://api.delirius.store/download/${type}?url=${encodeURIComponent(url)}`
 
-        const res = await fetch(`https://api-adonix.ultraplus.click/download/${endpoint}?apikey=AdonixKeyvr85v01953&url=${encodeURIComponent(url)}`)
+        const res = await fetch(apiUrl)
         const json = await res.json()
 
-        if (!json.status || !json.data?.url) throw '🤯 El servidor no respondió correctamente.'
+        if (!json.status || !json.data?.download) {
+            throw '🤯 El servidor de Delirius no respondió correctamente o el link es inválido.'
+        }
+
+        const downloadUrl = json.data.download
 
         if (isAudio) {
+            // Enviar como Audio/Mensaje de voz
             await conn.sendMessage(m.chat, { 
-                audio: { url: json.data.url }, 
+                audio: { url: downloadUrl }, 
                 fileName: `${title}.mp3`, 
                 mimetype: 'audio/mpeg' 
             }, { quoted: m })
         } else {
-            await conn.sendFile(m.chat, json.data.url, `${title}.mp4`, `✅ *Aquí tienes tu video:* \n🎥 ${title}`, m)
+            // Enviar como Video
+            await conn.sendMessage(m.chat, { 
+                video: { url: downloadUrl }, 
+                caption: `✅ *Aquí tienes:* ${title}`,
+                fileName: `${title}.mp4`,
+                mimetype: 'video/mp4'
+            }, { quoted: m })
         }
 
         await m.react('✅')
 
     } catch (e) {
+        console.error(e)
         await m.react('❌')
-        return conn.reply(m.chat, `⚠️ *OCURRIÓ UN ERROR* ⚠️\n\n> _Motivo: ${e}_`, m)
+        return conn.reply(m.chat, `⚠️ *ERROR* ⚠️\n\n> _Motivo: ${e.message || e}_`, m)
     }
 }
 
